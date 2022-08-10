@@ -14,14 +14,14 @@ public class BasketController {
         this.basketService = basketService;
     }
 
-    @GetMapping("/add/{id}")
-    public String addProductToBasket(@PathVariable int id){
-        return basketService.addProductToBasket(id);
+    @GetMapping("/add/{id}/{quantity}")
+    public String addProductToBasket(@PathVariable int id, @PathVariable int quantity){
+        return basketService.addProductToBasket(id, quantity);
     }
 
-    @GetMapping("/remove/{id}")
-    public String removeProductFromBasket(@PathVariable int id){
-        return basketService.removeProductFromBasket(id);
+    @GetMapping("/remove/{id}/{quantity}")
+    public String removeProductFromBasket(@PathVariable int id, @PathVariable int quantity){
+        return basketService.removeProductFromBasket(id, quantity);
     }
 
     @GetMapping("/summarize")

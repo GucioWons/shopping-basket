@@ -14,27 +14,30 @@ public class BasketService {
         this.productDao = productDao;
     }
 
-    public String addProductToBasket(int id) {
+    public String addProductToBasket(int id, int quantity) {
         Product product = productDao.findById(id).orElse(null);
         if(product != null){
-            basket.addProduct(product);
+            basket.addProduct(product, quantity);
             return "Done";
         }
         return "No product";
     }
 
-    public String removeProductFromBasket(int id) {
+    public String removeProductFromBasket(int id, int quantity) {
         Product product = productDao.findById(id).orElse(null);
         System.out.println(basket.getContent().toString());
         if(product != null){
-            if(basket.getContent().contains(product)){
-                basket.removeProduct(product);
-                System.out.println(basket.getContent().toString());
-                return "Done";
-            }
-            return "No product in basket";
+            return removeIfContains(product, quantity);
         }
         return "No product";
+    }
+
+    private String removeIfContains(Product product, int quantity){
+        if(basket.getContent().containsKey(product)){
+            basket.removeProduct(product, quantity);
+            return "Done";
+        }
+        return "No product in basket";
     }
 
     public Basket summarizeBasket() {
