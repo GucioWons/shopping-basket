@@ -22,4 +22,18 @@ public class BasketService {
         }
         return "No product";
     }
+
+    public String removeProduct(int id) {
+        Product product = productDao.findById(id).orElse(null);
+        System.out.println(basket.getContent().toString());
+        if(product != null){
+            if(basket.getContent().contains(product)){
+                basket.removeProduct(product);
+                System.out.println(basket.getContent().toString());
+                return "Done";
+            }
+            return "No product in basket";
+        }
+        return "No product";
+    }
 }

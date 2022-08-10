@@ -15,7 +15,12 @@ public class BasketController {
     }
 
     @GetMapping("/add/{id}")
-    public String addProducttoBasket(@PathVariable int id){
+    public String addProductToBasket(@PathVariable int id){
         return basketService.addProduct(id);
+    }
+
+    @GetMapping("/remove/{id}")
+    public String removeProductFromBasket(@PathVariable int id){
+        return basketService.removeProduct(id);
     }
 }
