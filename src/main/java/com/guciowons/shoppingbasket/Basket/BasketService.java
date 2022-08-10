@@ -14,7 +14,7 @@ public class BasketService {
         this.productDao = productDao;
     }
 
-    public String addProduct(int id) {
+    public String addProductToBasket(int id) {
         Product product = productDao.findById(id).orElse(null);
         if(product != null){
             basket.addProduct(product);
@@ -23,7 +23,7 @@ public class BasketService {
         return "No product";
     }
 
-    public String removeProduct(int id) {
+    public String removeProductFromBasket(int id) {
         Product product = productDao.findById(id).orElse(null);
         System.out.println(basket.getContent().toString());
         if(product != null){
@@ -35,5 +35,9 @@ public class BasketService {
             return "No product in basket";
         }
         return "No product";
+    }
+
+    public Basket summarizeBasket() {
+        return basket;
     }
 }
