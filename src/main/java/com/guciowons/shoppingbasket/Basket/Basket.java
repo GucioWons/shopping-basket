@@ -8,12 +8,23 @@ public class Basket {
     private HashMap<Product, Integer> content = new HashMap<>();
     private double sum;
 
+    public Basket() {
+    }
+
     public HashMap<Product, Integer> getContent() {
         return content;
     }
 
     public double getSum() {
         return sum;
+    }
+
+    public void setContent(HashMap<Product, Integer> content) {
+        this.content = content;
+    }
+
+    public void setSum(double sum) {
+        this.sum = sum;
     }
 
     public void addProduct(Product product, int quantity){

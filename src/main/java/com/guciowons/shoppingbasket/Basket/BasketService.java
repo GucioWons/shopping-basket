@@ -25,7 +25,6 @@ public class BasketService {
 
     public String removeProductFromBasket(int id, int quantity) {
         Product product = productDao.findById(id).orElse(null);
-        System.out.println(basket.getContent().toString());
         if(product != null){
             return removeIfContains(product, quantity);
         }
