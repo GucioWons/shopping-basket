@@ -1,0 +1,21 @@
+package com.guciowons.shoppingbasket.Basket;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping("/basket")
+public class BasketController {
+    private final BasketService basketService;
+
+    public BasketController(BasketService basketService) {
+        this.basketService = basketService;
+    }
+
+    @GetMapping("/add/{id}")
+    public String addProducttoBasket(@PathVariable int id){
+        return basketService.addProduct(id);
+    }
+}

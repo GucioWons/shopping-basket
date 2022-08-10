@@ -8,11 +8,11 @@ import java.util.Optional;
 
 @Repository
 public class ProductRepository implements ProductDao{
-    private static List<Product> DB = Arrays.asList(new Product("Monitor", "Monitor description"),
-            new Product("Mouse", "Mouse description"),
-            new Product("Keyboard", "Keyboard description"),
-            new Product("Microphone", "Microphone description"),
-            new Product("Computer", "Computer description"));
+    private static List<Product> DB = Arrays.asList(new Product("Monitor", "Monitor description", 499.99),
+            new Product("Mouse", "Mouse description", 99.99),
+            new Product("Keyboard", "Keyboard description", 149.99),
+            new Product("Microphone", "Microphone description", 199.99),
+            new Product("Computer", "Computer description", 1999.99));
 
     @Override
     public List<Product> getAll() {
