@@ -1,22 +1,19 @@
 package com.guciowons.shoppingbasket.Product;
 
 public class Product {
-    private int id;
+    private final int id;
     private String name;
     private String description;
+    private static int counter;
 
-    public Product(int id, String name, String description) {
-        this.id = id;
+    public Product(String name, String description) {
+        this.id = ++counter;
         this.name = name;
         this.description = description;
     }
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {
