@@ -39,7 +39,7 @@ public class BasketService {
         return "No product in basket";
     }
 
-    public Basket summarizeBasket() {
-        return basket;
+    public Summary summarizeBasket() {
+        return new Summary(basket.getContent());
     }
 }

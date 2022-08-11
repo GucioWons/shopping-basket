@@ -25,7 +25,7 @@ public class BasketController {
     }
 
     @GetMapping("/summarize")
-    public Basket summarizeBasket(){
+    public Summary summarizeBasket(){
         return basketService.summarizeBasket();
     }
 }
