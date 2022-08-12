@@ -6,18 +6,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
 @Service
 public class BasketService {
     private Basket basket = new Basket();
 
     private final ProductDao productDao;
+    private final BasketSummarizer basketSummarizer;
 
-    public BasketService(ProductDao productDao) {
+    public BasketService(ProductDao productDao, BasketSummarizer basketSummarizer) {
         this.productDao = productDao;
+        this.basketSummarizer = basketSummarizer;
     }
 
     public ResponseEntity addProductToBasket(int id, int quantity) {
@@ -45,17 +43,9 @@ public class BasketService {
         return new ResponseEntity(HttpStatus.NOT_FOUND);
     }
 
-    public Summary summarizeBasket() {
-        return new Summary(productsMapToList(basket.getContent()));
-    }
-
-    private List<Summary.MultiProduct> productsMapToList(HashMap<Integer, Integer> basketProducts){
-        List<Summary.MultiProduct> productsList = new ArrayList<>();
-        basketProducts.forEach((key, value) -> {
-            productDao.findById(key).ifPresent(
-                    product -> productsList.add(new Summary.MultiProduct(product, value))
-            );
-        });
-        return productsList;
+    public BasketSummarized summarizeBasket() {
+        return new BasketSummarized(
+                basketSummarizer.productsMapToList(basket.getContent(), productDao),
+                basketSummarizer.countPrices(basket.getContent(), productDao));
     }
 }

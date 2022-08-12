@@ -5,21 +5,13 @@ import com.guciowons.shoppingbasket.Product.Product;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class Summary {
+public class BasketSummarized {
     private final List<MultiProduct> products;
     private final BigDecimal cost;
 
-    public Summary(List<MultiProduct> products) {
+    public BasketSummarized(List<MultiProduct> products, BigDecimal cost) {
         this.products = products;
-        this.cost = countPrices();
-    }
-
-    private BigDecimal countPrices(){
-        BigDecimal price = new BigDecimal("0");
-        for(MultiProduct multiProduct : products){
-            price = price.add(multiProduct.product.getCost().multiply(new BigDecimal(multiProduct.getQuantity())));
-        }
-        return price;
+        this.cost = cost;
     }
 
     public List<MultiProduct> getProducts() {

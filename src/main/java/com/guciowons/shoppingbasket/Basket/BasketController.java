@@ -23,7 +23,7 @@ public class BasketController {
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    public Summary summarizeBasket(){
+    public BasketSummarized summarizeBasket(){
         return basketService.summarizeBasket();
     }
 }
