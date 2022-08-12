@@ -10,7 +10,13 @@ import java.util.List;
 
 @Component
 public class BasketSummarizer {
-    public BigDecimal countPrices(HashMap<Integer, Integer> basketProducts, ProductDao productDao){
+    public BasketSummarized summarizeBasket(HashMap<Integer, Integer> basketProducts, ProductDao productDao){
+        return new BasketSummarized(
+                productsMapToList(basketProducts, productDao),
+                countPrices(basketProducts, productDao));
+    }
+
+    private BigDecimal countPrices(HashMap<Integer, Integer> basketProducts, ProductDao productDao){
         List<BasketSummarized.MultiProduct> products = productsMapToList(basketProducts, productDao);
         BigDecimal price = new BigDecimal("0");
         for(BasketSummarized.MultiProduct multiProduct : products){
@@ -19,13 +25,11 @@ public class BasketSummarizer {
         return price;
     }
 
-    public List<BasketSummarized.MultiProduct> productsMapToList(HashMap<Integer, Integer> basketProducts, ProductDao productDao){
+    private List<BasketSummarized.MultiProduct> productsMapToList(HashMap<Integer, Integer> basketProducts, ProductDao productDao){
         List<BasketSummarized.MultiProduct> products = new ArrayList<>();
-        basketProducts.forEach((key, value) -> {
-            productDao.findById(key).ifPresent(
-                    product -> products.add(new BasketSummarized.MultiProduct(product, value))
-            );
-        });
+        basketProducts.forEach((key, value) -> productDao.findById(key).ifPresent(
+                product -> products.add(new BasketSummarized.MultiProduct(product, value))
+        ));
         return products;
     }
 }

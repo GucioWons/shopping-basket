@@ -4,7 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/basket")
+@RequestMapping("/baskets")
 public class BasketController {
     private final BasketService basketService;
 
@@ -13,12 +13,12 @@ public class BasketController {
     }
 
     @RequestMapping(value = "/{id}/{quantity}", method = RequestMethod.PUT)
-    public ResponseEntity addProductToBasket(@PathVariable int id, @PathVariable int quantity){
+    public ResponseEntity<String> addProductToBasket(@PathVariable int id, @PathVariable int quantity){
         return basketService.addProductToBasket(id, quantity);
     }
 
     @RequestMapping(value = "/{id}/{quantity}", method = RequestMethod.DELETE)
-    public ResponseEntity removeProductFromBasket(@PathVariable int id, @PathVariable int quantity){
+    public ResponseEntity<String> removeProductFromBasket(@PathVariable int id, @PathVariable int quantity){
         return basketService.removeProductFromBasket(id, quantity);
     }
 
