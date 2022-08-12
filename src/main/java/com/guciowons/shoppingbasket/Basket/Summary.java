@@ -3,28 +3,15 @@ package com.guciowons.shoppingbasket.Basket;
 import com.guciowons.shoppingbasket.Product.Product;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class Summary {
     private final List<MultiProduct> products;
     private final BigDecimal cost;
 
-    public Summary(HashMap<Product, Integer> basketProducts) {
-        this.products = productsMapToList(basketProducts);
+    public Summary(List<MultiProduct> products) {
+        this.products = products;
         this.cost = countPrices();
-    }
-
-    private List<MultiProduct> productsMapToList(HashMap<Product, Integer> basketProducts){
-        List<MultiProduct> productslist = new ArrayList<>();
-        for (Map.Entry<Product, Integer> entry : basketProducts.entrySet()) {
-            Product key = entry.getKey();
-            int value = entry.getValue();
-            productslist.add(new MultiProduct(key, value));
-        }
-        return productslist;
     }
 
     private BigDecimal countPrices(){
@@ -43,7 +30,7 @@ public class Summary {
         return cost;
     }
 
-    private class MultiProduct{
+    public static class MultiProduct{
         private final Product product;
         private final int quantity;
 

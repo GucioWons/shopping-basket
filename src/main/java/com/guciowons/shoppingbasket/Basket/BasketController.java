@@ -1,9 +1,7 @@
 package com.guciowons.shoppingbasket.Basket;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/basket")
@@ -14,17 +12,17 @@ public class BasketController {
         this.basketService = basketService;
     }
 
-    @GetMapping("/add/{id}/{quantity}")
-    public String addProductToBasket(@PathVariable int id, @PathVariable int quantity){
+    @RequestMapping(value = "/{id}/{quantity}", method = RequestMethod.PUT)
+    public ResponseEntity addProductToBasket(@PathVariable int id, @PathVariable int quantity){
         return basketService.addProductToBasket(id, quantity);
     }
 
-    @GetMapping("/remove/{id}/{quantity}")
-    public String removeProductFromBasket(@PathVariable int id, @PathVariable int quantity){
+    @RequestMapping(value = "/{id}/{quantity}", method = RequestMethod.DELETE)
+    public ResponseEntity removeProductFromBasket(@PathVariable int id, @PathVariable int quantity){
         return basketService.removeProductFromBasket(id, quantity);
     }
 
-    @GetMapping("/summarize")
+    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
     public Summary summarizeBasket(){
         return basketService.summarizeBasket();
     }
