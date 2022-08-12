@@ -1,14 +1,15 @@
 package com.guciowons.shoppingbasket.Product;
 
+import java.math.BigDecimal;
+
 public class Product {
     private final int id;
     private String name;
     private String description;
-    private double cost;
-    private static int counter;
+    private BigDecimal cost;
 
-    public Product(String name, String description, double cost) {
-        this.id = ++counter;
+    public Product(int id, String name, String description, BigDecimal cost) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.cost = cost;
@@ -34,11 +35,11 @@ public class Product {
         this.description = description;
     }
 
-    public double getCost() {
+    public BigDecimal getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
 }
