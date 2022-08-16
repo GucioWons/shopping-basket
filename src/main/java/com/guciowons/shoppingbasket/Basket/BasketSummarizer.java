@@ -24,8 +24,7 @@ public class BasketSummarizer {
 
     private List<BasketSummarized.MultiProduct> productsMapToList(HashMap<Integer, Integer> basketProducts, List<Product> allProducts){
         return basketProducts.entrySet().stream()
-                .map(product -> new BasketSummarized.MultiProduct(
-                        findProductById(allProducts, product.getKey()), product.getValue())).toList();
+                .map(product -> summarizeProduct(findProductById(allProducts, product.getKey()), product.getValue())).toList();
     }
 
     private Product findProductById(List<Product> allProducts, int id){
@@ -35,5 +34,9 @@ public class BasketSummarizer {
             }
         }
         return null;
+    }
+
+    private BasketSummarized.MultiProduct summarizeProduct(Product product, int quantity){
+        return new BasketSummarized.MultiProduct(product, quantity, product.getPrice().multiply(BigDecimal.valueOf(quantity)));
     }
 }

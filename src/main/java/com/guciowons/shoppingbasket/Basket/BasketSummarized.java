@@ -26,9 +26,12 @@ public class BasketSummarized {
         private final Product product;
         private final int quantity;
 
-        public MultiProduct(Product product, int quantity) {
+        private final BigDecimal summarizedCost;
+
+        public MultiProduct(Product product, int quantity, BigDecimal summarizedCost) {
             this.product = product;
             this.quantity = quantity;
+            this.summarizedCost = summarizedCost;
         }
 
         public Product getProduct() {
@@ -37,6 +40,10 @@ public class BasketSummarized {
 
         public int getQuantity() {
             return quantity;
+        }
+
+        public BigDecimal getSummarizedCost() {
+            return summarizedCost;
         }
     }
 }
