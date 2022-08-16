@@ -1,5 +1,6 @@
 package com.guciowons.shoppingbasket.Basket;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,18 +13,28 @@ public class BasketController {
         this.basketService = basketService;
     }
 
-    @RequestMapping(value = "/{id}/{quantity}", method = RequestMethod.PUT)
+    @PutMapping(value = "/{id}/{quantity}")
     public ResponseEntity<String> addProductToBasket(@PathVariable int id, @PathVariable int quantity){
-        return basketService.addProductToBasket(id, quantity);
+        try{
+            basketService.addProductToBasket(id, quantity);
+            return new ResponseEntity<>("Done", HttpStatus.ACCEPTED);
+        }catch(IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
-    @RequestMapping(value = "/{id}/{quantity}", method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/{id}/{quantity}")
     public ResponseEntity<String> removeProductFromBasket(@PathVariable int id, @PathVariable int quantity){
-        return basketService.removeProductFromBasket(id, quantity);
+        try{
+            basketService.removeProductFromBasket(id, quantity);
+            return new ResponseEntity<>("Done", HttpStatus.ACCEPTED);
+        }catch(IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
-    @RequestMapping(method = RequestMethod.GET, produces = "application/json")
-    public BasketSummarized summarizeBasket(){
-        return basketService.summarizeBasket();
+    @GetMapping
+    public ResponseEntity<BasketSummarized> summarizeBasket(){
+        return new ResponseEntity<>(basketService.summarizeBasket(), HttpStatus.ACCEPTED);
     }
 }

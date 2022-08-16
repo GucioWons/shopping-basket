@@ -1,8 +1,6 @@
 package com.guciowons.shoppingbasket.Basket;
 
 import com.guciowons.shoppingbasket.Product.ProductDao;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,26 +15,26 @@ public class BasketService {
         this.basketSummarizer = basketSummarizer;
     }
 
-    public ResponseEntity<String> addProductToBasket(int id, int quantity) {
-        return productDao.findById(id)
-                .map(product -> {
-                    basket.addProduct(id, quantity);
-                    return new ResponseEntity<>("Done", HttpStatus.ACCEPTED);
-                }).orElseGet(() -> new ResponseEntity<>("No such product", HttpStatus.NOT_FOUND));
+    public void addProductToBasket(int id, int quantity) throws IllegalArgumentException{
+        productDao.findById(id).ifPresentOrElse(
+                product -> basket.addProduct(id, quantity),
+                () -> {throw new IllegalArgumentException("No such product");}
+        );
     }
 
-    public ResponseEntity<String> removeProductFromBasket(int id, int quantity) {
-        return productDao.findById(id)
-                .map(product -> removeIfContains(id, quantity))
-                .orElseGet(() -> new ResponseEntity<>("No such product", HttpStatus.NOT_FOUND));
+    public void removeProductFromBasket(int id, int quantity) throws IllegalArgumentException{
+        productDao.findById(id).ifPresentOrElse(
+                product -> removeIfContains(id, quantity),
+                () -> {throw new IllegalArgumentException("No such product");}
+        );
     }
 
-    private ResponseEntity<String> removeIfContains(Integer productId, int quantity){
+    private void removeIfContains(Integer productId, int quantity) throws IllegalArgumentException{
         if(basket.getContent().containsKey(productId)){
             basket.removeProduct(productId, quantity);
-            return new ResponseEntity<>("Done", HttpStatus.ACCEPTED);
+        }else {
+            throw new IllegalArgumentException("No such product in the basket");
         }
-        return new ResponseEntity<>("No such product in basket", HttpStatus.NOT_FOUND);
     }
 
     public BasketSummarized summarizeBasket() {

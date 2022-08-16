@@ -9,10 +9,6 @@ public class Basket {
         return content;
     }
 
-    public void setContent(HashMap<Integer, Integer> content) {
-        this.content = content;
-    }
-
     public void addProduct(Integer productId, int quantity){
         if(!content.containsKey(productId)){
             content.put(productId, quantity);
