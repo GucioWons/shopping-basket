@@ -38,6 +38,6 @@ public class BasketService {
     }
 
     public BasketSummarized summarizeBasket() {
-        return basketSummarizer.summarizeBasket(basket.getContent(), productDao);
+        return basketSummarizer.summarizeBasket(basket.getContent(), productDao.getAll());
     }
 }

@@ -1,35 +1,39 @@
 package com.guciowons.shoppingbasket.Basket;
 
-import com.guciowons.shoppingbasket.Product.ProductDao;
+import com.guciowons.shoppingbasket.Product.Product;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 @Component
 public class BasketSummarizer {
-    public BasketSummarized summarizeBasket(HashMap<Integer, Integer> basketProducts, ProductDao productDao){
+    public BasketSummarized summarizeBasket(HashMap<Integer, Integer> basketProducts, List<Product> allProducts){
         return new BasketSummarized(
-                productsMapToList(basketProducts, productDao),
-                countPrices(basketProducts, productDao));
+                productsMapToList(basketProducts, allProducts),
+                countPrices(basketProducts, allProducts));
     }
 
-    private BigDecimal countPrices(HashMap<Integer, Integer> basketProducts, ProductDao productDao){
-        List<BasketSummarized.MultiProduct> products = productsMapToList(basketProducts, productDao);
-        BigDecimal price = new BigDecimal("0");
-        for(BasketSummarized.MultiProduct multiProduct : products){
-            price = price.add(multiProduct.getProduct().getCost().multiply(new BigDecimal(multiProduct.getQuantity())));
+    private BigDecimal countPrices(HashMap<Integer, Integer> basketProducts, List<Product> allProducts){
+        return basketProducts.entrySet().stream()
+                .map(product -> findProductById(
+                        allProducts, product.getKey()).getPrice().multiply(BigDecimal.valueOf(product.getValue())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    private List<BasketSummarized.MultiProduct> productsMapToList(HashMap<Integer, Integer> basketProducts, List<Product> allProducts){
+        return basketProducts.entrySet().stream()
+                .map(product -> new BasketSummarized.MultiProduct(
+                        findProductById(allProducts, product.getKey()), product.getValue())).toList();
+    }
+
+    private Product findProductById(List<Product> allProducts, int id){
+        for(Product product : allProducts){
+            if(product.getId() == id){
+                return product;
+            }
         }
-        return price;
-    }
-
-    private List<BasketSummarized.MultiProduct> productsMapToList(HashMap<Integer, Integer> basketProducts, ProductDao productDao){
-        List<BasketSummarized.MultiProduct> products = new ArrayList<>();
-        basketProducts.forEach((key, value) -> productDao.findById(key).ifPresent(
-                product -> products.add(new BasketSummarized.MultiProduct(product, value))
-        ));
-        return products;
+        return null;
     }
 }
