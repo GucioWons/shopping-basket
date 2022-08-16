@@ -18,7 +18,15 @@ public class Basket {
         }
     }
 
-    public void removeProduct(Integer productId, int quantity){
+    public void removeProduct(Integer productId, int quantity) throws IllegalArgumentException{
+        if(content.containsKey(productId)){
+            removeIfContains(productId, quantity);
+        }else {
+            throw new IllegalArgumentException("No such product in the basket");
+        }
+    }
+
+    private void removeIfContains(Integer productId, int quantity){
         int current = content.get(productId);
         if(current <= quantity){
             content.remove(productId);

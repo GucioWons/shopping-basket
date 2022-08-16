@@ -24,17 +24,9 @@ public class BasketService {
 
     public void removeProductFromBasket(int id, int quantity) throws IllegalArgumentException{
         productDao.findById(id).ifPresentOrElse(
-                product -> removeIfContains(id, quantity),
+                product -> basket.removeProduct(id, quantity),
                 () -> {throw new IllegalArgumentException("No such product");}
         );
-    }
-
-    private void removeIfContains(Integer productId, int quantity) throws IllegalArgumentException{
-        if(basket.getContent().containsKey(productId)){
-            basket.removeProduct(productId, quantity);
-        }else {
-            throw new IllegalArgumentException("No such product in the basket");
-        }
     }
 
     public BasketSummarized summarizeBasket() {
