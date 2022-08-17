@@ -19,12 +19,15 @@ public class BasketService {
         basketDao.save(basket);
     }
 
-//    public void addProductToBasket(int id, int quantity) throws IllegalArgumentException{
-//        productDao.findById(id).ifPresentOrElse(
-//                product -> basket.addProduct(id, quantity),
-//                () -> {throw new IllegalArgumentException("No such product");}
-//        );
-//    }
+    public void addProductToBasket(int basketId, int productId, int quantity) throws IllegalArgumentException{
+        basketDao.findById(basketId).ifPresentOrElse(
+                basket -> productDao.findById(productId).ifPresentOrElse(
+                        product -> basket.addProduct(productId, quantity),
+                        () -> {throw new IllegalArgumentException("No such product");}
+                ),
+                () -> {throw new IllegalArgumentException("No such basket");}
+        );
+    }
 //
 //    public void removeProductFromBasket(int id, int quantity) throws IllegalArgumentException{
 //        productDao.findById(id).ifPresentOrElse(

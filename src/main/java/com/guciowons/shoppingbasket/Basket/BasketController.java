@@ -19,16 +19,16 @@ public class BasketController {
         return new ResponseEntity<>("Done", HttpStatus.CREATED);
     }
 
-//    @PutMapping(value = "/{id}/{quantity}")
-//    public ResponseEntity<String> addProductToBasket(@PathVariable int id, @PathVariable int quantity){
-//        try{
-//            basketService.addProductToBasket(id, quantity);
-//            return new ResponseEntity<>("Done", HttpStatus.ACCEPTED);
-//        }catch(IllegalArgumentException e){
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-//        }
-//    }
-//
+    @PutMapping(value = "/{basketId}/{productId}/{quantity}")
+    public ResponseEntity<String> addProductToBasket(@PathVariable int basketId,@PathVariable int productId, @PathVariable int quantity){
+        try{
+            basketService.addProductToBasket(basketId, productId, quantity);
+            return new ResponseEntity<>("Done", HttpStatus.ACCEPTED);
+        }catch(IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
 //    @DeleteMapping(value = "/{id}/{quantity}")
 //    public ResponseEntity<String> removeProductFromBasket(@PathVariable int id, @PathVariable int quantity){
 //        try{
