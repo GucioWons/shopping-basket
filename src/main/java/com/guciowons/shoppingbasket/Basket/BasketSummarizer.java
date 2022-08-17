@@ -28,12 +28,10 @@ public class BasketSummarizer {
     }
 
     private Product findProductById(List<Product> allProducts, int id){
-        for(Product product : allProducts){
-            if(product.getId() == id){
-                return product;
-            }
-        }
-        return null;
+        return allProducts.stream()
+                .filter(product -> id == product.getId())
+                .findFirst()
+                .orElse(null);
     }
 
     private BasketSummarized.MultiProduct summarizeProduct(Product product, int quantity){
