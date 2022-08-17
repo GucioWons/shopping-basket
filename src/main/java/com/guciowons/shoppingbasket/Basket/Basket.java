@@ -3,12 +3,8 @@ package com.guciowons.shoppingbasket.Basket;
 import java.util.HashMap;
 
 public class Basket {
-    private final int id;
+    private int id;
     private HashMap<Integer, Integer> content = new HashMap<>();
-
-    public Basket(int id) {
-        this.id = id;
-    }
 
     public int getId() {
         return id;

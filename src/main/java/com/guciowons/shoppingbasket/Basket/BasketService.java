@@ -5,31 +5,35 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class BasketService {
-    private Basket basket = new Basket();
-
     private final ProductDao productDao;
     private final BasketSummarizer basketSummarizer;
+    private final BasketDao basketDao;
 
-    public BasketService(ProductDao productDao, BasketSummarizer basketSummarizer) {
+    public BasketService(ProductDao productDao, BasketSummarizer basketSummarizer, BasketDao basketDao) {
         this.productDao = productDao;
         this.basketSummarizer = basketSummarizer;
+        this.basketDao = basketDao;
     }
 
-    public void addProductToBasket(int id, int quantity) throws IllegalArgumentException{
-        productDao.findById(id).ifPresentOrElse(
-                product -> basket.addProduct(id, quantity),
-                () -> {throw new IllegalArgumentException("No such product");}
-        );
+    public void createBasket(Basket basket) {
+        basketDao.save(basket);
     }
 
-    public void removeProductFromBasket(int id, int quantity) throws IllegalArgumentException{
-        productDao.findById(id).ifPresentOrElse(
-                product -> basket.removeProduct(id, quantity),
-                () -> {throw new IllegalArgumentException("No such product");}
-        );
-    }
-
-    public BasketSummarized summarizeBasket() {
-        return basketSummarizer.summarizeBasket(basket.getContent(), productDao.getAll());
-    }
+//    public void addProductToBasket(int id, int quantity) throws IllegalArgumentException{
+//        productDao.findById(id).ifPresentOrElse(
+//                product -> basket.addProduct(id, quantity),
+//                () -> {throw new IllegalArgumentException("No such product");}
+//        );
+//    }
+//
+//    public void removeProductFromBasket(int id, int quantity) throws IllegalArgumentException{
+//        productDao.findById(id).ifPresentOrElse(
+//                product -> basket.removeProduct(id, quantity),
+//                () -> {throw new IllegalArgumentException("No such product");}
+//        );
+//    }
+//
+//    public BasketSummarized summarizeBasket() {
+//        return basketSummarizer.summarizeBasket(basket.getContent(), productDao.getAll());
+//    }
 }
