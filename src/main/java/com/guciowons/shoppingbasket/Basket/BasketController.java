@@ -29,16 +29,16 @@ public class BasketController {
         }
     }
 
-//    @DeleteMapping(value = "/{id}/{quantity}")
-//    public ResponseEntity<String> removeProductFromBasket(@PathVariable int id, @PathVariable int quantity){
-//        try{
-//            basketService.removeProductFromBasket(id, quantity);
-//            return new ResponseEntity<>("Done", HttpStatus.ACCEPTED);
-//        }catch(IllegalArgumentException e){
-//            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
-//        }
-//    }
-//
+    @DeleteMapping(value = "/{basketId}/{productId}/{quantity}")
+    public ResponseEntity<String> removeProductFromBasket(@PathVariable int basketId, @PathVariable int productId, @PathVariable int quantity){
+        try{
+            basketService.removeProductFromBasket(basketId, productId, quantity);
+            return new ResponseEntity<>("Done", HttpStatus.ACCEPTED);
+        }catch(IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping(value="/{basketId}")
     public ResponseEntity<BasketSummarized> summarizeBasket(@PathVariable int basketId){
         try{

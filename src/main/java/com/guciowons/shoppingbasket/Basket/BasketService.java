@@ -28,14 +28,17 @@ public class BasketService {
                 () -> {throw new IllegalArgumentException("No such basket");}
         );
     }
-//
-//    public void removeProductFromBasket(int id, int quantity) throws IllegalArgumentException{
-//        productDao.findById(id).ifPresentOrElse(
-//                product -> basket.removeProduct(id, quantity),
-//                () -> {throw new IllegalArgumentException("No such product");}
-//        );
-//    }
-//
+
+    public void removeProductFromBasket(int basketId, int productId, int quantity) throws IllegalArgumentException{
+        basketDao.findById(basketId).ifPresentOrElse(
+                basket -> productDao.findById(productId).ifPresentOrElse(
+                        product -> basket.removeProduct(productId, quantity),
+                        () -> {throw new IllegalArgumentException("No such product");}
+                ),
+                () -> {throw new IllegalArgumentException("No such basket");}
+        );
+    }
+
     public BasketSummarized summarizeBasket(int basketId) {
         return basketDao.findById(basketId).map(
                 basket -> basketSummarizer.summarizeBasket(basket.getContent(), productDao.getAll())
