@@ -36,7 +36,9 @@ public class BasketService {
 //        );
 //    }
 //
-//    public BasketSummarized summarizeBasket() {
-//        return basketSummarizer.summarizeBasket(basket.getContent(), productDao.getAll());
-//    }
+    public BasketSummarized summarizeBasket(int basketId) {
+        return basketDao.findById(basketId).map(
+                basket -> basketSummarizer.summarizeBasket(basket.getContent(), productDao.getAll())
+                ).orElseThrow(() -> {throw new IllegalArgumentException("No such basket");});
+    }
 }

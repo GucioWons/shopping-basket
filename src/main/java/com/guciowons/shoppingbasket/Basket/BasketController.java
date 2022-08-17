@@ -39,8 +39,12 @@ public class BasketController {
 //        }
 //    }
 //
-//    @GetMapping
-//    public ResponseEntity<BasketSummarized> summarizeBasket(){
-//        return new ResponseEntity<>(basketService.summarizeBasket(), HttpStatus.ACCEPTED);
-//    }
+    @GetMapping(value="/{basketId}")
+    public ResponseEntity<BasketSummarized> summarizeBasket(@PathVariable int basketId){
+        try{
+            return new ResponseEntity<>(basketService.summarizeBasket(basketId), HttpStatus.ACCEPTED);
+        }catch(IllegalArgumentException e){
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+    }
 }
