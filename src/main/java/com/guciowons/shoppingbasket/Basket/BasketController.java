@@ -14,18 +14,16 @@ public class BasketController {
     }
 
     @PostMapping
-    public ResponseEntity<String> createBasket(@RequestBody Basket basket){
-        basketService.createBasket(basket);
-        return new ResponseEntity<>("Done", HttpStatus.CREATED);
+    public ResponseEntity<Basket> createBasket(){
+        return new ResponseEntity<>(basketService.createBasket(), HttpStatus.CREATED);
     }
 
     @PutMapping(value = "/{basketId}/{productId}/{quantity}")
-    public ResponseEntity<String> addProductToBasket(@PathVariable int basketId,@PathVariable int productId, @PathVariable int quantity){
+    public ResponseEntity<BasketSummarized> addProductToBasket(@PathVariable int basketId, @PathVariable int productId, @PathVariable int quantity){
         try{
-            basketService.addProductToBasket(basketId, productId, quantity);
-            return new ResponseEntity<>("Done", HttpStatus.ACCEPTED);
+            return new ResponseEntity<>(basketService.addProductToBasket(basketId, productId, quantity), HttpStatus.ACCEPTED);
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
@@ -44,7 +42,7 @@ public class BasketController {
         try{
             return new ResponseEntity<>(basketService.summarizeBasket(basketId), HttpStatus.ACCEPTED);
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 }
