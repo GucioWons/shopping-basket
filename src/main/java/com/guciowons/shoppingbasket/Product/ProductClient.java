@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import java.util.List;
 import java.util.Optional;
 
-@FeignClient(url="https://fakestoreapi.com", name="PRODUCT-CLIENT")
+@FeignClient(url="${getstore.url}", name="PRODUCT-CLIENT")
 public interface ProductClient {
 
     @GetMapping("/products")
