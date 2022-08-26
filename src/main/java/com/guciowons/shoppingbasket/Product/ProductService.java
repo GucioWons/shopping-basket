@@ -1,5 +1,6 @@
 package com.guciowons.shoppingbasket.Product;
 
+import feign.FeignException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public class ProductService {
         this.productClient = productClient;
     }
 
-    public List<Product> getProducts() {
+    public List<Product> getProducts() throws FeignException{
         return productClient.getProducts();
     }
 }
