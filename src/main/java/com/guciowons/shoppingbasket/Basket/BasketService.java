@@ -29,7 +29,7 @@ public class BasketService {
                             basket.addProduct(productId, quantity);
                             return basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts());
                         })
-                        .orElseThrow(() -> {throw new IllegalArgumentException("No such basket");}))
+                        .orElseThrow(() -> {throw new IllegalArgumentException("No such product");}))
                 .orElseThrow(() -> {throw new IllegalArgumentException("No such basket");});
     }
 
