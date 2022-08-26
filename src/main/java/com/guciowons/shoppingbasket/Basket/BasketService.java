@@ -1,18 +1,19 @@
 package com.guciowons.shoppingbasket.Basket;
 
-import com.guciowons.shoppingbasket.Product.ProductClient;
+import com.guciowons.shoppingbasket.Product.ProductService;
+import feign.FeignException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BasketService {
     private final BasketSummarizer basketSummarizer;
     private final BasketDao basketDao;
-    private final ProductClient productClient;
+    private final ProductService productService;
 
-    public BasketService(BasketSummarizer basketSummarizer, BasketDao basketDao, ProductClient productClient) {
+    public BasketService(BasketSummarizer basketSummarizer, BasketDao basketDao, ProductService productService) {
         this.basketSummarizer = basketSummarizer;
         this.basketDao = basketDao;
-        this.productClient = productClient;
+        this.productService = productService;
     }
 
     public Basket createBasket() {
@@ -21,20 +22,20 @@ public class BasketService {
         return newBasket;
     }
 
-    public BasketSummarized addProductToBasket(int basketId, int productId, int quantity) throws IllegalArgumentException{
+    public BasketSummarized addProductToBasket(int basketId, int productId, int quantity) throws IllegalArgumentException, FeignException {
         return basketDao.findById(basketId)
-                .map(basket -> productClient.getProductById(productId)
+                .map(basket -> productService.getProductById(productId)
                         .map(product -> {
                             basket.addProduct(productId, quantity);
-                            return basketSummarizer.summarizeBasket(basket.getContent(), productClient.getProducts());
+                            return basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts());
                         })
                         .orElseThrow(() -> {throw new IllegalArgumentException("No such basket");}))
                 .orElseThrow(() -> {throw new IllegalArgumentException("No such basket");});
     }
 
-    public void removeProductFromBasket(int basketId, int productId, int quantity) throws IllegalArgumentException{
+    public void removeProductFromBasket(int basketId, int productId, int quantity) throws IllegalArgumentException, FeignException {
         basketDao.findById(basketId).ifPresentOrElse(
-                basket -> productClient.getProductById(productId).ifPresentOrElse(
+                basket -> productService.getProductById(productId).ifPresentOrElse(
                         product -> basket.removeProduct(productId, quantity),
                         () -> {throw new IllegalArgumentException("No such product");}
                 ),
@@ -42,9 +43,9 @@ public class BasketService {
         );
     }
 
-    public BasketSummarized summarizeBasket(int basketId) {
+    public BasketSummarized summarizeBasket(int basketId) throws FeignException {
         return basketDao.findById(basketId).map(
-                basket -> basketSummarizer.summarizeBasket(basket.getContent(), productClient.getProducts())
+                basket -> basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts())
                 ).orElseThrow(() -> {throw new IllegalArgumentException("No such basket");});
     }
 }

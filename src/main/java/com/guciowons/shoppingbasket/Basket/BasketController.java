@@ -1,5 +1,6 @@
 package com.guciowons.shoppingbasket.Basket;
 
+import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,11 +20,19 @@ public class BasketController {
     }
 
     @PutMapping(value = "/{basketId}/{productId}/{quantity}")
-    public ResponseEntity<BasketSummarized> addProductToBasket(@PathVariable int basketId, @PathVariable int productId, @PathVariable int quantity){
+    public ResponseEntity addProductToBasket(@PathVariable int basketId, @PathVariable int productId, @PathVariable int quantity){
         try{
-            return new ResponseEntity<>(basketService.addProductToBasket(basketId, productId, quantity), HttpStatus.ACCEPTED);
+            return ResponseEntity
+                    .status(HttpStatus.ACCEPTED)
+                    .body(basketService.addProductToBasket(basketId, productId, quantity));
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }catch(FeignException e){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Unable to fetch product from external provider");
         }
     }
 
@@ -34,15 +43,25 @@ public class BasketController {
             return new ResponseEntity<>("Done", HttpStatus.ACCEPTED);
         }catch(IllegalArgumentException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }catch(FeignException e){
+            return new ResponseEntity<>("Unable to fetch product from external provider", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping(value="/{basketId}")
-    public ResponseEntity<BasketSummarized> summarizeBasket(@PathVariable int basketId){
+    public ResponseEntity summarizeBasket(@PathVariable int basketId){
         try{
-            return new ResponseEntity<>(basketService.summarizeBasket(basketId), HttpStatus.ACCEPTED);
+            return ResponseEntity
+                    .status(HttpStatus.ACCEPTED)
+                    .body(basketService.summarizeBasket(basketId));
         }catch(IllegalArgumentException e){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        }catch(FeignException e){
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Unable to fetch product from external provider");
         }
     }
 }

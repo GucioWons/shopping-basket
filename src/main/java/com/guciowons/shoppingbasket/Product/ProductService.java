@@ -4,6 +4,7 @@ import feign.FeignException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -16,5 +17,9 @@ public class ProductService {
 
     public List<Product> getProducts() throws FeignException{
         return productClient.getProducts();
+    }
+
+    public Optional<Product> getProductById(int productId){
+        return productClient.getProductById(productId);
     }
 }
