@@ -6,13 +6,14 @@ import java.util.List;
 
 @Service
 public class ProductService {
-    private final ProductDao productDao;
 
-    public ProductService(ProductDao productDao) {
-        this.productDao = productDao;
+    private final ProductClient productClient;
+
+    public ProductService(ProductClient productClient) {
+        this.productClient = productClient;
     }
 
     public List<Product> getProducts() {
-        return productDao.getAll();
+        return productClient.getProducts();
     }
 }

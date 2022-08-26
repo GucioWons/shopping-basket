@@ -1,30 +1,41 @@
 package com.guciowons.shoppingbasket.Product;
-
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Product {
-    private final int id;
-    private String name;
-    private String description;
+
+    private Integer id;
+    private String title;
     private BigDecimal price;
+    private String description;
+    private String category;
+    private String image;
+    private Rating rating;
+    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public Product(int id, String name, String description, BigDecimal price) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.price = price;
-    }
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
+
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public String getDescription() {
@@ -35,11 +46,36 @@ public class Product {
         this.description = description;
     }
 
-    public BigDecimal getPrice() {
-        return price;
+    public String getCategory() {
+        return category;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setCategory(String category) {
+        this.category = category;
     }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
+    }
+
+    public Map<String, Object> getAdditionalProperties() {
+        return this.additionalProperties;
+    }
+
+    public void setAdditionalProperty(String name, Object value) {
+        this.additionalProperties.put(name, value);
+    }
+
 }
