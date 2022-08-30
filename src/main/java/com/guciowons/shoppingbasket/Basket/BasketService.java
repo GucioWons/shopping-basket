@@ -1,5 +1,6 @@
 package com.guciowons.shoppingbasket.Basket;
 
+import com.guciowons.shoppingbasket.Exception.*;
 import com.guciowons.shoppingbasket.Product.ProductService;
 import feign.FeignException;
 import org.springframework.stereotype.Service;
@@ -22,30 +23,45 @@ public class BasketService {
         return newBasket;
     }
 
-    public BasketSummarized addProductToBasket(int basketId, int productId, int quantity) throws IllegalArgumentException, FeignException {
-        return basketDao.findById(basketId)
-                .map(basket -> productService.getProductById(productId)
-                        .map(product -> {
-                            basket.addProduct(productId, quantity);
-                            return basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts());
-                        })
-                        .orElseThrow(() -> {throw new IllegalArgumentException("No such product");}))
-                .orElseThrow(() -> {throw new IllegalArgumentException("No such basket");});
+    public BasketSummarized addProductToBasket(int basketId, int productId, int quantity) throws NoExternalConnectionException, NoProductException, NoBasketException{
+        try{
+            return basketDao.findById(basketId)
+                    .map(basket -> productService.getProductById(productId)
+                            .map(product -> {
+                                basket.addProduct(productId, quantity);
+                                System.out.println(product);
+                                return basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts());
+                            })
+                            .orElseThrow(() -> new NoProductException("No such product!")))
+                    .orElseThrow(() -> new NoBasketException("No such basket"));
+        }catch (FeignException e){
+            throw new NoExternalConnectionException("Cant connect with external api");
+        }
     }
 
-    public void removeProductFromBasket(int basketId, int productId, int quantity) throws IllegalArgumentException, FeignException {
-        basketDao.findById(basketId).ifPresentOrElse(
-                basket -> productService.getProductById(productId).ifPresentOrElse(
-                        product -> basket.removeProduct(productId, quantity),
-                        () -> {throw new IllegalArgumentException("No such product");}
-                ),
-                () -> {throw new IllegalArgumentException("No such basket");}
-        );
+    public void removeProductFromBasket(int basketId, int productId, int quantity) throws NoExternalConnectionException, NoProductInBasketException, NoProductException, NoBasketException {
+        try {
+            basketDao.findById(basketId).ifPresentOrElse(
+                    basket -> productService.getProductById(productId).ifPresentOrElse(
+                            product -> basket.removeProduct(productId, quantity),
+                            () -> {
+                                throw new NoProductException("No such product!");
+                            }),
+                    () -> {
+                        throw new NoBasketException("No such basket!");
+                    });
+        }catch (FeignException e){
+            throw new NoExternalConnectionException("Cant connect with external api");
+        }
     }
 
-    public BasketSummarized summarizeBasket(int basketId) throws FeignException {
-        return basketDao.findById(basketId).map(
-                basket -> basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts())
-                ).orElseThrow(() -> {throw new IllegalArgumentException("No such basket");});
+    public BasketSummarized summarizeBasket(int basketId) throws NoBasketException, NoExternalConnectionException{
+        try {
+            return basketDao.findById(basketId).map(
+                    basket -> basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts())
+            ).orElseThrow(() -> new NoBasketException("No such basket"));
+        }catch (FeignException e){
+            throw new NoExternalConnectionException("Cant connect with external api");
+        }
     }
 }

@@ -1,6 +1,5 @@
 package com.guciowons.shoppingbasket.Product;
 
-import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,14 +17,8 @@ public class ProductController {
 
     @GetMapping
     public ResponseEntity getProducts(){
-        try {
-            return ResponseEntity
-                    .status(HttpStatus.ACCEPTED)
-                    .body(productService.getProducts());
-        }catch(FeignException e){
-            return ResponseEntity
-                    .status(HttpStatus.GATEWAY_TIMEOUT)
-                    .body("Unable to fetch products from external provider");
-        }
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(productService.getProducts());
     }
 }
