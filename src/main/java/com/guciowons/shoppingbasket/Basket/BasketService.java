@@ -1,53 +1,70 @@
 package com.guciowons.shoppingbasket.Basket;
 
 import com.guciowons.shoppingbasket.Exception.*;
+import com.guciowons.shoppingbasket.Product.Product;
 import com.guciowons.shoppingbasket.Product.ProductService;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class BasketService {
     private final BasketSummarizer basketSummarizer;
-    private final BasketDao basketDao;
+    private final BasketRepository basketRepository;
     private final ProductService productService;
 
-    public BasketService(BasketSummarizer basketSummarizer, BasketDao basketDao, ProductService productService) {
+    public BasketService(BasketSummarizer basketSummarizer, BasketRepository basketRepository, ProductService productService) {
         this.basketSummarizer = basketSummarizer;
-        this.basketDao = basketDao;
+        this.basketRepository = basketRepository;
         this.productService = productService;
     }
 
     public Basket createBasket() {
-        Basket newBasket = new Basket(basketDao.getAll().size());
-        basketDao.save(newBasket);
+        Basket newBasket = new Basket(basketRepository.findAll().size());
+        basketRepository.save(newBasket);
         return newBasket;
     }
 
+
     public BasketSummarized addProductToBasket(int basketId, int productId, int quantity) throws NoExternalConnectionException, NoProductException, NoBasketException{
-        return basketDao.findById(basketId)
-                .map(basket -> productService.getProductById(productId)
-                        .map(product -> {
-                            basket.addProduct(productId, quantity);
-                            System.out.println(product);
-                            return basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts());
-                        })
-                        .orElseThrow(() -> new NoProductException("No such product!")))
+        return basketRepository.findById(basketId)
+                .map(basket -> addProductIfExists(productService.getProductById(productId), basket, quantity))
                 .orElseThrow(() -> new NoBasketException("No such basket"));
     }
 
+    private BasketSummarized addProductIfExists(Optional<Product> optionalProduct, Basket basket, int quantity){
+        return optionalProduct
+                .map(product -> {
+                    basket.addProduct(product.getId(), quantity);
+                    basketRepository.save(basket);
+                    return basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts());
+                })
+                .orElseThrow(() -> new NoProductException("No such product!"));
+    }
+
+
     public void removeProductFromBasket(int basketId, int productId, int quantity) throws NoExternalConnectionException, NoProductInBasketException, NoProductException, NoBasketException {
-        basketDao.findById(basketId).ifPresentOrElse(
-                basket -> productService.getProductById(productId).ifPresentOrElse(
-                        product -> basket.removeProduct(productId, quantity),
-                        () -> {
-                            throw new NoProductException("No such product!");
-                        }),
+        basketRepository.findById(basketId).ifPresentOrElse(
+                basket -> removeProductIfExists(productService.getProductById(productId), basket, quantity),
                     () -> {
                         throw new NoBasketException("No such basket!");
                     });
     }
 
+    private void removeProductIfExists(Optional<Product> optionalProduct, Basket basket, int quantity){
+        optionalProduct
+                .ifPresentOrElse(product -> {
+                        basket.removeProduct(product.getId(), quantity);
+                        basketRepository.save(basket);
+                    },
+                    () -> {
+                        throw new NoProductException("No such product!");
+                });
+    }
+
+
     public BasketSummarized summarizeBasket(int basketId) throws NoBasketException, NoExternalConnectionException{
-        return basketDao.findById(basketId).map(
+        return basketRepository.findById(basketId).map(
                 basket -> basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts())
         ).orElseThrow(() -> new NoBasketException("No such basket"));
     }
