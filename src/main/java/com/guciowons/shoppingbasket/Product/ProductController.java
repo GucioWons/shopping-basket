@@ -16,7 +16,7 @@ public class ProductController {
     }
 
     @GetMapping
-    public ResponseEntity getProducts(){
+    public ResponseEntity<Object> getProducts(){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(productService.getProducts());

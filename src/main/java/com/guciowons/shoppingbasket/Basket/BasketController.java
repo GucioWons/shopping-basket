@@ -19,7 +19,7 @@ public class BasketController {
     }
 
     @PutMapping(value = "/{basketId}/{productId}/{quantity}")
-    public ResponseEntity addProductToBasket(@PathVariable int basketId, @PathVariable int productId, @PathVariable int quantity){
+    public ResponseEntity<Object> addProductToBasket(@PathVariable int basketId, @PathVariable int productId, @PathVariable int quantity){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(basketService.addProductToBasket(basketId, productId, quantity));
@@ -32,7 +32,7 @@ public class BasketController {
     }
 
     @GetMapping(value="/{basketId}")
-    public ResponseEntity summarizeBasket(@PathVariable int basketId){
+    public ResponseEntity<Object> summarizeBasket(@PathVariable int basketId){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(basketService.summarizeBasket(basketId));

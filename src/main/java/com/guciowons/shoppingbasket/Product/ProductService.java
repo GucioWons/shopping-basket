@@ -26,6 +26,6 @@ public class ProductService {
     }
 
     public Optional<Product> getProductById(int productId){
-        return productClient.getProductById(productId);
+        return productRepository.findById(productId);
     }
 }
