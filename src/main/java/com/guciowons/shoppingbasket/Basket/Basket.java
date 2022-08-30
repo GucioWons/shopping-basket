@@ -1,5 +1,7 @@
 package com.guciowons.shoppingbasket.Basket;
 
+import com.guciowons.shoppingbasket.Exception.NoProductInBasketException;
+
 import java.util.HashMap;
 
 public class Basket {
@@ -27,11 +29,11 @@ public class Basket {
         }
     }
 
-    public void removeProduct(Integer productId, int quantity) throws IllegalArgumentException{
+    public void removeProduct(Integer productId, int quantity) throws NoProductInBasketException {
         if(content.containsKey(productId)){
             removeIfContains(productId, quantity);
         }else {
-            throw new IllegalArgumentException("No such product in the basket");
+            throw new NoProductInBasketException("No such product in the basket");
         }
     }
 
