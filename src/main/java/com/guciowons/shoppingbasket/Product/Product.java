@@ -1,10 +1,15 @@
 package com.guciowons.shoppingbasket.Product;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
+@Document
 public class Product {
 
+    @Id
     private Integer id;
     private String title;
     private BigDecimal price;
@@ -13,6 +18,15 @@ public class Product {
     private String image;
     private Rating rating;
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    public Product() {
+    }
+
+    public Product(String title, BigDecimal price, String description) {
+        this.title = title;
+        this.price = price;
+        this.description = description;
+    }
 
     public Integer getId() {
         return id;
