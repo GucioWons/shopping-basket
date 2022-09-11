@@ -10,7 +10,7 @@ import java.util.HashMap;
 public class Basket {
     @Id
     private String id;
-    private HashMap<Integer, Integer> content = new HashMap<>();
+    private HashMap<String, Integer> content = new HashMap<>();
 
     public Basket() {
     }
@@ -23,15 +23,15 @@ public class Basket {
         this.id = id;
     }
 
-    public HashMap<Integer, Integer> getContent() {
+    public HashMap<String, Integer> getContent() {
         return content;
     }
 
-    public void setContent(HashMap<Integer, Integer> content) {
+    public void setContent(HashMap<String, Integer> content) {
         this.content = content;
     }
 
-    public void addProduct(Integer productId, int quantity){
+    public void addProduct(String productId, int quantity){
         if(!content.containsKey(productId)){
             content.put(productId, quantity);
         }else{
@@ -40,7 +40,7 @@ public class Basket {
         }
     }
 
-    public void removeProduct(Integer productId, int quantity) throws NoProductInBasketException {
+    public void removeProduct(String productId, int quantity) throws NoProductInBasketException {
         if(content.containsKey(productId)){
             removeIfContains(productId, quantity);
         }else {
@@ -48,7 +48,7 @@ public class Basket {
         }
     }
 
-    private void removeIfContains(Integer productId, int quantity){
+    private void removeIfContains(String productId, int quantity){
         int current = content.get(productId);
         if(current <= quantity){
             content.remove(productId);

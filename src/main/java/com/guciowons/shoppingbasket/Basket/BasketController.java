@@ -19,14 +19,14 @@ public class BasketController {
     }
 
     @PutMapping(value = "/{basketId}/{productId}/{quantity}")
-    public ResponseEntity<Basket> addProductToBasket(@PathVariable String basketId, @PathVariable int productId, @PathVariable int quantity){
+    public ResponseEntity<Basket> addProductToBasket(@PathVariable String basketId, @PathVariable String productId, @PathVariable int quantity){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(basketService.addProductToBasket(basketId, productId, quantity));
     }
 
     @DeleteMapping(value = "/{basketId}/{productId}/{quantity}")
-    public ResponseEntity<Basket> removeProductFromBasket(@PathVariable String basketId, @PathVariable int productId, @PathVariable int quantity){
+    public ResponseEntity<Basket> removeProductFromBasket(@PathVariable String basketId, @PathVariable String productId, @PathVariable int quantity){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(basketService.removeProductFromBasket(basketId, productId, quantity));

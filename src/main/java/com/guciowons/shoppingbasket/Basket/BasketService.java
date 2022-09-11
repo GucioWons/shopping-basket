@@ -23,32 +23,32 @@ public class BasketService {
     }
 
 
-    public Basket addProductToBasket(String basketId, int productId, int quantity) throws NoExternalConnectionException, NoProductException, NoBasketException{
+    public Basket addProductToBasket(String basketId, String productId, int quantity) throws NoExternalConnectionException, NoProductException, NoBasketException{
         return basketRepository.findById(basketId)
                 .map(basket -> addProductIfExists(basket, productId, quantity))
                 .orElseThrow(() -> new NoBasketException("No such basket"));
     }
 
-    private Basket addProductIfExists(Basket basket, int productId, int quantity){
+    private Basket addProductIfExists(Basket basket, String productId, int quantity){
         return productService.getProductById(productId)
                 .map(product -> {
-                    basket.addProduct(product.getId(), quantity);
+                    basket.addProduct(product.getAppId(), quantity);
                     return basketRepository.save(basket);
                 })
                 .orElseThrow(() -> new NoProductException("No such product!"));
     }
 
 
-    public Basket removeProductFromBasket(String basketId, int productId, int quantity) throws NoExternalConnectionException, NoProductInBasketException, NoProductException, NoBasketException {
+    public Basket removeProductFromBasket(String basketId, String productId, int quantity) throws NoExternalConnectionException, NoProductInBasketException, NoProductException, NoBasketException {
         return basketRepository.findById(basketId)
                 .map(basket -> removeProductIfExists(basket, productId, quantity))
                 .orElseThrow(() -> new NoBasketException("No such basket"));
     }
 
-    private Basket removeProductIfExists(Basket basket, int productId, int quantity){
+    private Basket removeProductIfExists(Basket basket, String productId, int quantity){
         return productService.getProductById(productId)
                 .map(product -> {
-                    basket.removeProduct(product.getId(), quantity);
+                    basket.removeProduct(product.getAppId(), quantity);
                     return basketRepository.save(basket);
                 })
                 .orElseThrow(() -> new NoProductException("No such product!"));

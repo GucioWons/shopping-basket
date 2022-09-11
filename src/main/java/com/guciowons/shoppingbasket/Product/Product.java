@@ -10,6 +10,7 @@ import java.util.Map;
 public class Product {
 
     @Id
+    private String appId;
     private Integer id;
     private String title;
     private BigDecimal price;
@@ -17,15 +18,17 @@ public class Product {
     private String category;
     private String image;
     private Rating rating;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+    private Map<String, Object> additionalProperties = new HashMap<>();
 
     public Product() {
     }
 
-    public Product(String title, BigDecimal price, String description) {
-        this.title = title;
-        this.price = price;
-        this.description = description;
+    public String getAppId() {
+        return appId;
+    }
+
+    public void setAppId(String appId) {
+        this.appId = appId;
     }
 
     public Integer getId() {
