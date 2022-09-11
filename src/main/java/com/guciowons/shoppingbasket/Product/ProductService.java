@@ -1,6 +1,7 @@
 package com.guciowons.shoppingbasket.Product;
 
-import com.guciowons.shoppingbasket.Exception.NoExternalConnectionException;
+import feign.FeignException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,11 +18,18 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    @Scheduled(fixedDelay = 360000)
     public void insertProducts(){
-        productRepository.insert(productClient.getProducts());
+        try {
+            if (productRepository.findAll().isEmpty()) {
+                productRepository.saveAll(productClient.getProducts());
+            }
+        }catch (FeignException e){
+            System.out.println("Error connecting to external api. Products will be downloaded in one hour");
+        }
     }
 
-    public List<Product> getProducts() throws NoExternalConnectionException {
+    public List<Product> getProducts() {
        return productRepository.findAll();
     }
 
