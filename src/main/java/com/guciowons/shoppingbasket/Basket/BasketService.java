@@ -1,11 +1,9 @@
 package com.guciowons.shoppingbasket.Basket;
 
 import com.guciowons.shoppingbasket.Exception.*;
-import com.guciowons.shoppingbasket.Product.Product;
 import com.guciowons.shoppingbasket.Product.ProductService;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class BasketService {
@@ -27,12 +25,12 @@ public class BasketService {
 
     public Basket addProductToBasket(int basketId, int productId, int quantity) throws NoExternalConnectionException, NoProductException, NoBasketException{
         return basketRepository.findById(basketId)
-                .map(basket -> addProductIfExists(productService.getProductById(productId), basket, quantity))
+                .map(basket -> addProductIfExists(basket, productId, quantity))
                 .orElseThrow(() -> new NoBasketException("No such basket"));
     }
 
-    private Basket addProductIfExists(Optional<Product> optionalProduct, Basket basket, int quantity){
-        return optionalProduct
+    private Basket addProductIfExists(Basket basket, int productId, int quantity){
+        return productService.getProductById(productId)
                 .map(product -> {
                     basket.addProduct(product.getId(), quantity);
                     return basketRepository.save(basket);
@@ -43,12 +41,12 @@ public class BasketService {
 
     public Basket removeProductFromBasket(int basketId, int productId, int quantity) throws NoExternalConnectionException, NoProductInBasketException, NoProductException, NoBasketException {
         return basketRepository.findById(basketId)
-                .map(basket -> removeProductIfExists(productService.getProductById(productId), basket, quantity))
+                .map(basket -> removeProductIfExists(basket, productId, quantity))
                 .orElseThrow(() -> new NoBasketException("No such basket"));
     }
 
-    private Basket removeProductIfExists(Optional<Product> optionalProduct, Basket basket, int quantity){
-        return optionalProduct
+    private Basket removeProductIfExists(Basket basket, int productId, int quantity){
+        return productService.getProductById(productId)
                 .map(product -> {
                     basket.removeProduct(product.getId(), quantity);
                     return basketRepository.save(basket);
