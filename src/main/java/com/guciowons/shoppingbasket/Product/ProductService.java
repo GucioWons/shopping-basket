@@ -18,14 +18,35 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    @Scheduled(fixedDelay = 360000)
-    public void insertProducts(){
+    @Scheduled(fixedDelay = 3600000)
+    public void refreshProductsInDatabase(){
         try {
-            if (productRepository.findAll().isEmpty()) {
-                productRepository.saveAll(productClient.getProducts());
-            }
+            insertProducts();
         }catch (FeignException e){
             System.out.println("Error connecting to external api. Products will be downloaded in one hour");
+        }
+    }
+
+    public void insertProducts(){
+        if (productRepository.findAll().isEmpty()) {
+            productRepository.saveAll(productClient.getProducts());
+        }else {
+            updateProducts();
+        }
+    }
+
+    public void updateProducts(){
+            productClient.getProducts()
+                    .forEach(externalProduct -> productRepository.findProductById(externalProduct.getId()).ifPresentOrElse(
+                            databaseProduct -> updateExistingProduct(databaseProduct, externalProduct),
+                            () -> productRepository.save(externalProduct)
+                    ));
+    }
+
+    public void updateExistingProduct(Product databaseProduct, Product externalProduct){
+        if (!externalProduct.equals(databaseProduct)) {
+            externalProduct.setAppId(databaseProduct.getAppId());
+            productRepository.save(externalProduct);
         }
     }
 

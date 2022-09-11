@@ -5,6 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 @Document
 public class Product {
@@ -20,7 +21,9 @@ public class Product {
     private Rating rating;
     private Map<String, Object> additionalProperties = new HashMap<>();
 
-    public Product() {
+    public Product(Integer id, String title) {
+        this.id = id;
+        this.title = title;
     }
 
     public String getAppId() {
@@ -95,4 +98,16 @@ public class Product {
         this.additionalProperties.put(name, value);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(price, product.price) && Objects.equals(description, product.description) && Objects.equals(category, product.category) && Objects.equals(image, product.image) && Objects.equals(rating, product.rating) && Objects.equals(additionalProperties, product.additionalProperties);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, price, description, category, image, rating, additionalProperties);
+    }
 }
