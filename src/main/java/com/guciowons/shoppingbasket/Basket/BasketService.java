@@ -21,45 +21,39 @@ public class BasketService {
 
     public Basket createBasket() {
         Basket newBasket = new Basket(basketRepository.findAll().size());
-        basketRepository.save(newBasket);
-        return newBasket;
+        return basketRepository.save(newBasket);
     }
 
 
-    public BasketSummarized addProductToBasket(int basketId, int productId, int quantity) throws NoExternalConnectionException, NoProductException, NoBasketException{
+    public Basket addProductToBasket(int basketId, int productId, int quantity) throws NoExternalConnectionException, NoProductException, NoBasketException{
         return basketRepository.findById(basketId)
                 .map(basket -> addProductIfExists(productService.getProductById(productId), basket, quantity))
                 .orElseThrow(() -> new NoBasketException("No such basket"));
     }
 
-    private BasketSummarized addProductIfExists(Optional<Product> optionalProduct, Basket basket, int quantity){
+    private Basket addProductIfExists(Optional<Product> optionalProduct, Basket basket, int quantity){
         return optionalProduct
                 .map(product -> {
                     basket.addProduct(product.getId(), quantity);
-                    basketRepository.save(basket);
-                    return basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts());
+                    return basketRepository.save(basket);
                 })
                 .orElseThrow(() -> new NoProductException("No such product!"));
     }
 
 
-    public void removeProductFromBasket(int basketId, int productId, int quantity) throws NoExternalConnectionException, NoProductInBasketException, NoProductException, NoBasketException {
-        basketRepository.findById(basketId).ifPresentOrElse(
-                basket -> removeProductIfExists(productService.getProductById(productId), basket, quantity),
-                    () -> {
-                        throw new NoBasketException("No such basket!");
-                    });
+    public Basket removeProductFromBasket(int basketId, int productId, int quantity) throws NoExternalConnectionException, NoProductInBasketException, NoProductException, NoBasketException {
+        return basketRepository.findById(basketId)
+                .map(basket -> removeProductIfExists(productService.getProductById(productId), basket, quantity))
+                .orElseThrow(() -> new NoBasketException("No such basket"));
     }
 
-    private void removeProductIfExists(Optional<Product> optionalProduct, Basket basket, int quantity){
-        optionalProduct
-                .ifPresentOrElse(product -> {
-                        basket.removeProduct(product.getId(), quantity);
-                        basketRepository.save(basket);
-                    },
-                    () -> {
-                        throw new NoProductException("No such product!");
-                });
+    private Basket removeProductIfExists(Optional<Product> optionalProduct, Basket basket, int quantity){
+        return optionalProduct
+                .map(product -> {
+                    basket.removeProduct(product.getId(), quantity);
+                    return basketRepository.save(basket);
+                })
+                .orElseThrow(() -> new NoProductException("No such product!"));
     }
 
 

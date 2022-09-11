@@ -19,20 +19,21 @@ public class BasketController {
     }
 
     @PutMapping(value = "/{basketId}/{productId}/{quantity}")
-    public ResponseEntity<Object> addProductToBasket(@PathVariable int basketId, @PathVariable int productId, @PathVariable int quantity){
+    public ResponseEntity<Basket> addProductToBasket(@PathVariable int basketId, @PathVariable int productId, @PathVariable int quantity){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(basketService.addProductToBasket(basketId, productId, quantity));
     }
 
     @DeleteMapping(value = "/{basketId}/{productId}/{quantity}")
-    public ResponseEntity<String> removeProductFromBasket(@PathVariable int basketId, @PathVariable int productId, @PathVariable int quantity){
-        basketService.removeProductFromBasket(basketId, productId, quantity);
-        return new ResponseEntity<>("Done", HttpStatus.OK);
+    public ResponseEntity<Basket> removeProductFromBasket(@PathVariable int basketId, @PathVariable int productId, @PathVariable int quantity){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(basketService.removeProductFromBasket(basketId, productId, quantity));
     }
 
     @GetMapping(value="/{basketId}")
-    public ResponseEntity<Object> summarizeBasket(@PathVariable int basketId){
+    public ResponseEntity<BasketSummarized> summarizeBasket(@PathVariable int basketId){
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(basketService.summarizeBasket(basketId));
