@@ -2,7 +2,6 @@ package com.guciowons.shoppingbasket.Basket;
 
 import com.guciowons.shoppingbasket.Exception.NoProductInBasketException;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.annotation.Version;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.HashMap;
@@ -10,21 +9,17 @@ import java.util.HashMap;
 @Document
 public class Basket {
     @Id
-    private int id;
+    private String id;
     private HashMap<Integer, Integer> content = new HashMap<>();
 
-    @Version
-    private Integer version;
-
-    public Basket(int id) {
-        this.id = id;
+    public Basket() {
     }
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
