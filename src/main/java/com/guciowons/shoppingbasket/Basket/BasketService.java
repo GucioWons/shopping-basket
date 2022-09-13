@@ -32,7 +32,7 @@ public class BasketService {
     private Basket addProductIfExists(Basket basket, String productId, int quantity){
         return productService.getProductById(productId)
                 .map(product -> {
-                    basket.addProduct(product.getAppId(), quantity);
+                    basket.addProduct(product.getId(), quantity);
                     return basketRepository.save(basket);
                 })
                 .orElseThrow(() -> new NoProductException("No such product!"));
@@ -48,7 +48,7 @@ public class BasketService {
     private Basket removeProductIfExists(Basket basket, String productId, int quantity){
         return productService.getProductById(productId)
                 .map(product -> {
-                    basket.removeProduct(product.getAppId(), quantity);
+                    basket.removeProduct(product.getId(), quantity);
                     return basketRepository.save(basket);
                 })
                 .orElseThrow(() -> new NoProductException("No such product!"));

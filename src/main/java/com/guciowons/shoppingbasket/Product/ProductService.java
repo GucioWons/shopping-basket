@@ -37,7 +37,7 @@ public class ProductService {
 
     public void updateProducts(){
             productClient.getProducts()
-                    .forEach(externalProduct -> productRepository.findProductById(externalProduct.getId()).ifPresentOrElse(
+                    .forEach(externalProduct -> productRepository.findProductByExternalId(externalProduct.getExternalId()).ifPresentOrElse(
                             databaseProduct -> updateExistingProduct(databaseProduct, externalProduct),
                             () -> productRepository.save(externalProduct)
                     ));
@@ -45,7 +45,7 @@ public class ProductService {
 
     public void updateExistingProduct(Product databaseProduct, Product externalProduct){
         if (!externalProduct.equals(databaseProduct)) {
-            externalProduct.setAppId(databaseProduct.getAppId());
+            externalProduct.setId(databaseProduct.getId());
             productRepository.save(externalProduct);
         }
     }

@@ -1,45 +1,41 @@
 package com.guciowons.shoppingbasket.Product;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 @Document
 public class Product {
 
     @Id
-    private String appId;
-    private Integer id;
+    private String id;
+    private Integer externalId;
     private String title;
     private BigDecimal price;
     private String description;
     private String category;
     private String image;
     private Rating rating;
-    private Map<String, Object> additionalProperties = new HashMap<>();
 
-    public Product(Integer id, String title) {
-        this.id = id;
-        this.title = title;
-    }
-
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
-    public Integer getId() {
+    @JsonProperty("id")
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    @JsonProperty("appId")
+    public void setId(String id) {
         this.id = id;
+    }
+
+    @JsonProperty("externalId")
+    public Integer getExternalId() {
+        return externalId;
+    }
+    @JsonProperty("id")
+    public void setExternalId(Integer externalId) {
+        this.externalId = externalId;
     }
 
     public String getTitle() {
@@ -90,24 +86,16 @@ public class Product {
         this.rating = rating;
     }
 
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(price, product.price) && Objects.equals(description, product.description) && Objects.equals(category, product.category) && Objects.equals(image, product.image) && Objects.equals(rating, product.rating) && Objects.equals(additionalProperties, product.additionalProperties);
+        return Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(price, product.price) && Objects.equals(description, product.description) && Objects.equals(category, product.category) && Objects.equals(image, product.image) && Objects.equals(rating, product.rating);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, price, description, category, image, rating, additionalProperties);
+        return Objects.hash(id, title, price, description, category, image, rating);
     }
 }

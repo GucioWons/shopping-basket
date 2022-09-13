@@ -29,7 +29,7 @@ public class BasketSummarizer {
 
     private Product findProductById(List<Product> allProducts, String id){
         return allProducts.stream()
-                .filter(product -> id.equals(product.getAppId()))
+                .filter(product -> id.equals(product.getId()))
                 .findFirst()
                 .orElse(null);
     }
