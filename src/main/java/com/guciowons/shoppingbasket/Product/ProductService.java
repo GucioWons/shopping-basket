@@ -28,26 +28,16 @@ public class ProductService {
     }
 
     public void insertProducts(){
-        if (productRepository.findAll().isEmpty()) {
-            productRepository.saveAll(productClient.getProducts());
-        }else {
-            updateProducts();
-        }
-    }
-
-    public void updateProducts(){
             productClient.getProducts()
                     .forEach(externalProduct -> productRepository.findProductByExternalId(externalProduct.getExternalId()).ifPresentOrElse(
-                            databaseProduct -> updateExistingProduct(databaseProduct, externalProduct),
+                            databaseProduct -> updateProducts(databaseProduct, externalProduct),
                             () -> productRepository.save(externalProduct)
                     ));
     }
 
-    public void updateExistingProduct(Product databaseProduct, Product externalProduct){
-        if (!externalProduct.equals(databaseProduct)) {
-            externalProduct.setId(databaseProduct.getId());
-            productRepository.save(externalProduct);
-        }
+    public void updateProducts(Product databaseProduct, Product externalProduct){
+        externalProduct.setId(databaseProduct.getId());
+        productRepository.save(externalProduct);
     }
 
     public List<Product> getProducts() {

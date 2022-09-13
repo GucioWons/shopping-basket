@@ -15,9 +15,7 @@ public class Product {
     private String title;
     private BigDecimal price;
     private String description;
-    private String category;
     private String image;
-    private Rating rating;
 
     @JsonProperty("id")
     public String getId() {
@@ -62,14 +60,6 @@ public class Product {
         this.description = description;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public String getImage() {
         return image;
     }
@@ -78,24 +68,16 @@ public class Product {
         this.image = image;
     }
 
-    public Rating getRating() {
-        return rating;
-    }
-
-    public void setRating(Rating rating) {
-        this.rating = rating;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        return Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(price, product.price) && Objects.equals(description, product.description) && Objects.equals(category, product.category) && Objects.equals(image, product.image) && Objects.equals(rating, product.rating);
+        return Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(price, product.price) && Objects.equals(description, product.description) && Objects.equals(image, product.image);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, price, description, category, image, rating);
+        return Objects.hash(id, title, price, description, image);
     }
 }
