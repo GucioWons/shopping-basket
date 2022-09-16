@@ -1,25 +1,41 @@
 package com.guciowons.shoppingbasket.Product;
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
+import java.util.Objects;
+
+@Document
 public class Product {
 
-    private Integer id;
+    @Id
+    private String id;
+    private Integer externalId;
     private String title;
     private BigDecimal price;
     private String description;
-    private String category;
-    private String image;
-    private Rating rating;
-    private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-    public Integer getId() {
+    public Product(Integer externalId, String title, BigDecimal price, String description) {
+        this.externalId = externalId;
+        this.title = title;
+        this.price = price;
+        this.description = description;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
+    }
+
+    public Integer getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(Integer externalId) {
+        this.externalId = externalId;
     }
 
     public String getTitle() {
@@ -46,36 +62,16 @@ public class Product {
         this.description = description;
     }
 
-    public String getCategory() {
-        return category;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(id, product.id) && Objects.equals(title, product.title) && Objects.equals(price, product.price) && Objects.equals(description, product.description);
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, price, description);
     }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public Rating getRating() {
-        return rating;
-    }
-
-    public void setRating(Rating rating) {
-        this.rating = rating;
-    }
-
-    public Map<String, Object> getAdditionalProperties() {
-        return this.additionalProperties;
-    }
-
-    public void setAdditionalProperty(String name, Object value) {
-        this.additionalProperties.put(name, value);
-    }
-
 }
