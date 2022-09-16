@@ -10,11 +10,11 @@ import java.util.Optional;
 @Service
 public class ProductService {
 
-    private final ProductClient productClient;
+    private final ProductProvider productProvider;
     private final ProductRepository productRepository;
 
-    public ProductService(ProductClient productClient, ProductRepository productRepository) {
-        this.productClient = productClient;
+    public ProductService(ProductProvider productProvider, ProductRepository productRepository) {
+        this.productProvider = productProvider;
         this.productRepository = productRepository;
     }
 
@@ -28,14 +28,14 @@ public class ProductService {
     }
 
     public void insertProducts(){
-            productClient.getProducts()
+            productProvider.getProducts()
                     .forEach(externalProduct -> productRepository.findProductByExternalId(externalProduct.getExternalId()).ifPresentOrElse(
                             databaseProduct -> updateProducts(databaseProduct, externalProduct),
                             () -> productRepository.save(externalProduct)
                     ));
     }
 
-    public void updateProducts(Product databaseProduct, Product externalProduct){
+    private void updateProducts(Product databaseProduct, Product externalProduct){
         externalProduct.setId(databaseProduct.getId());
         productRepository.save(externalProduct);
     }

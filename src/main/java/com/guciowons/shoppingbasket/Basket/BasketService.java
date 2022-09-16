@@ -18,8 +18,7 @@ public class BasketService {
     }
 
     public Basket createBasket() {
-        Basket newBasket = new Basket();
-        return basketRepository.save(newBasket);
+        return basketRepository.save(new Basket());
     }
 
 
