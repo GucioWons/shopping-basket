@@ -11,11 +11,11 @@ Go to the project folder.
 Build docker image with docker.
 
 ```bash
-docker build -t shopping-basket.jar .
+docker build -t shopping-basket .
 ```
 
 Run container at port 9090.
 
 ```bash
-docker run -p 9090:8080 shopping-basket.jar
+docker run -p 9090:8080 shopping-basket
 ```
