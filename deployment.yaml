@@ -8,8 +8,8 @@ spec:
   ports:
     - protocol: "TCP"
       port: 8081 # The port that the service is running on in the cluster
-      targetPort: 8081 # The port exposed by the service
-  type: LoadBalancer # type of the service. LoadBalancer indicates that our service will be external.
+      targetPort: 8080 # The port exposed by the service
+  type: NodePort # type of the service. LoadBalancer indicates that our service will be external.
 ---
 apiVersion: apps/v1
 kind: Deployment # Kubernetes resource kind we are creating
@@ -19,7 +19,7 @@ spec:
   selector:
     matchLabels:
       app: shopping-basket
-  replicas: 2 # Number of replicas that will be created for this deployment
+  replicas: 1 # Number of replicas that will be created for this deployment
   template:
     metadata:
       labels:
