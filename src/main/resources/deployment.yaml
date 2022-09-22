@@ -1,0 +1,54 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: shopping-basket
+spec:
+  selector:
+    app: shopping-basket
+  ports:
+    - protocol: TCP
+      port: 8080
+      nodePort: 30081
+  type: NodePort
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: shopping-basket
+spec:
+  selector:
+    matchLabels:
+      app: shopping-basket
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: shopping-basket
+    spec:
+      containers:
+        - name: shopping-basket
+          image: shopping-basket:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: username
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-secret
+                  key: password
+            - name: MONGO_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-conf
+                  key: database
+            - name: MONGO_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mongo-conf
+                  key: host
