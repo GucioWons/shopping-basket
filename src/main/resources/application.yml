@@ -3,11 +3,11 @@ spring:
     name: shopping-basket
   data:
     mongodb:
-      host: '${MONGO_HOST}'
-      database: '${MONGO_DB}'
+      host: ${MONGO_HOST:localhost}
+      database: ${MONGO_DB:database}
       port: 27017
-      username: '${MONGO_USERNAME}'
-      password: '${MONGO_PASSWORD}'
+      username: ${MONGO_USERNAME:admin}
+      password: ${MONGO_PASSWORD:password}
   cloud:
     kubernetes:
       discovery:
