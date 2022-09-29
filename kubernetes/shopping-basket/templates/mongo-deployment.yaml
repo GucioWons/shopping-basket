@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.mongo.deployment.name }}
+  labels:
+    app: {{ .Values.mongo.app }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.mongo.app }}
+  replicas: {{ .Values.mongo.deployment.replicas }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.mongo.app }}
+      name: mongodb-service
+
+
+    spec:
+      containers:
+        - image: {{ .Values.mongo.deployment.image.repository }}:{{ .Values.mongo.deployment.image.tag }}
+          name: {{ .Values.mongo.deployment.image.name }}
+
+          env:
+            - name: MONGO_INITDB_ROOT_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mongo.secret.name }}
+                  key: username
+            - name: MONGO_INITDB_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.mongo.secret.name }}
+                  key: password
+
+
+          ports:
+            - containerPort: {{ .Values.mongo.port }}
+              name: {{ .Values.mongo.deployment.name }}
+          volumeMounts:
+            - name: mongo-persistent-storage
+              mountPath: /data/db #This is the path in the container on which the mounting will take place.
+      volumes:
+        - name: mongo-persistent-storage # Obtaining 'vloume' from PVC
+          persistentVolumeClaim:
+            claimName: mongo-pv-claim

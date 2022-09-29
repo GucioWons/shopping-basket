@@ -1,34 +1,21 @@
-kind: Service
-apiVersion: v1
-metadata:
-  name: shopping-basket
-spec:
-  selector:
-    app: shopping-basket
-  ports:
-    - protocol: TCP
-      port: 8080
-      nodePort: 30081
-  type: NodePort
----
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: shopping-basket
+  name: {{ include "shopping-basket.fullname" . }}
 spec:
   selector:
     matchLabels:
-      app: shopping-basket
-  replicas: 1
+      app: {{ include "shopping-basket.name" . }}
+  replicas: {{ .Values.replicaCount }}
   template:
     metadata:
       labels:
-        app: shopping-basket
+        app: {{ include "shopping-basket.name" . }}
     spec:
       containers:
-        - name: shopping-basket
-          image: shopping-basket:latest
-          imagePullPolicy: IfNotPresent
+        - name: {{ .Chart.Name }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8080
           env:
