@@ -28,7 +28,7 @@ spec:
       containers:
         - name: shopping-basket
           image: shopping-basket:latest
-          imagePullPolicy: Never
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080
           env:
