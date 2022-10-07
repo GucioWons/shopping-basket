@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface PriceRecordRepository extends MongoRepository<PriceRecord, BigDecimal> {
     List<PriceRecord> findByDateTimeBetween(LocalDateTime from, LocalDateTime to);
+    List<PriceRecord> findAllByProductId(String productId);
 }

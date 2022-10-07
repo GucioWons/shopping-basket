@@ -26,4 +26,8 @@ public class PriceRecordService {
     public List<PriceRecord> getPriceRecordsByDateTime(LocalDateTime from, LocalDateTime to) {
         return priceRecordRepository.findByDateTimeBetween(from, to);
     }
+
+    public List<PriceRecord> getPriceRecordsByProduct(String productId) {
+        return priceRecordRepository.findAllByProductId(productId);
+    }
 }
