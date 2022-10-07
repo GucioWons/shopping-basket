@@ -1,21 +1,21 @@
-spring:
-  application:
-    name: shopping-basket
-  data:
-    mongodb:
-      host: ${MONGO_HOST:localhost}
-      database: ${MONGO_DB:database}
-      port: 27017
-      username: ${MONGO_USERNAME:admin}
-      password: ${MONGO_PASSWORD:password}
-management:
-  endpoint:
-    restart:
-      enabled: true
-    health:
-      enabled: true
-    info:
-      enabled: true
+#spring:
+#  application:
+#    name: shopping-basket
+#  data:
+#    mongodb:
+#      host: ${MONGO_HOST:localhost}
+#      database: ${MONGO_DB:database}
+#      port: 27017
+#      username: ${MONGO_USERNAME:admin}
+#      password: ${MONGO_PASSWORD:password}
+#management:
+#  endpoint:
+#    restart:
+#      enabled: true
+#    health:
+#      enabled: true
+#    info:
+#      enabled: true
 
 services:
   service: https://fakestoreapi.com
@@ -23,3 +23,8 @@ services:
 feign:
   okhttp:
     enabled: true
+
+spring:
+  mongodb:
+    embedded:
+      version: 3.2.3
