@@ -15,8 +15,7 @@ public class PriceRecordService {
     }
 
     public void createPriceRecord(Product product){
-        PriceRecord priceRecord = new PriceRecord(product.getId(), product.getPrice(), LocalDateTime.now());
-        priceRecordRepository.save(priceRecord);
+        priceRecordRepository.save(new PriceRecord(product.getId(), product.getPrice(), LocalDateTime.now()));
     }
 
     public List<PriceRecord> getPriceRecords() {
