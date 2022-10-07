@@ -23,11 +23,15 @@ public class PriceRecordService {
         return priceRecordRepository.findAll();
     }
 
-    public List<PriceRecord> getPriceRecordsByDateTime(LocalDateTime from, LocalDateTime to) {
+    public List<PriceRecord> getPriceRecordsBetweenDateTime(LocalDateTime from, LocalDateTime to) {
         return priceRecordRepository.findByDateTimeBetween(from, to);
     }
 
     public List<PriceRecord> getPriceRecordsByProduct(String productId) {
         return priceRecordRepository.findAllByProductId(productId);
+    }
+
+    public List<PriceRecord> getPriceRecordsBetweenDateTimeByProduct(String productId, LocalDateTime from, LocalDateTime to) {
+        return priceRecordRepository.findAllByProductIdAndDateTimeBetween(productId, from, to);
     }
 }

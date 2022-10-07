@@ -25,12 +25,12 @@ public class PriceRecordController {
     }
 
     @GetMapping("/datetime")
-    public ResponseEntity<List<PriceRecord>> getPriceRecordsByDateTime(
+    public ResponseEntity<List<PriceRecord>> getPriceRecordsBetweenDateTime(
             @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
             @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to){
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(priceRecordService.getPriceRecordsByDateTime(from, to));
+                .body(priceRecordService.getPriceRecordsBetweenDateTime(from, to));
     }
 
     @GetMapping("/product/{productId}")
@@ -38,5 +38,15 @@ public class PriceRecordController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(priceRecordService.getPriceRecordsByProduct(productId));
+    }
+
+    @GetMapping("/product/{productId}/datetime")
+    public ResponseEntity<List<PriceRecord>> getPriceRecordsBetweenDateTimeByProduct(
+            @PathVariable String productId,
+            @RequestParam("from") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime from,
+            @RequestParam("to") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime to){
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(priceRecordService.getPriceRecordsBetweenDateTimeByProduct(productId, from, to));
     }
 }
