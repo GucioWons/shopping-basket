@@ -4,13 +4,12 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.time.LocalDateTime;
 
 @Document
 public class PriceRecord {
     @Id
-    private BigInteger id;
+    private String id;
     private String productId;
     private BigDecimal price;
     private LocalDateTime dateTime;
@@ -21,11 +20,11 @@ public class PriceRecord {
         this.dateTime = dateTime;
     }
 
-    public BigInteger getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(String id) {
         this.id = id;
     }
 

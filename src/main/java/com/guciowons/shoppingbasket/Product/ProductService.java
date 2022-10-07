@@ -39,8 +39,8 @@ public class ProductService {
     }
 
     private void insertProduct(Product externalProduct){
-        priceRecordService.createPriceRecord(externalProduct);
         productRepository.save(externalProduct);
+        priceRecordService.createPriceRecord(externalProduct);
     }
 
     private void updateProduct(Product databaseProduct, Product externalProduct){

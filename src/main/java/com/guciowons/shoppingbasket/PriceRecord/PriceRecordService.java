@@ -4,6 +4,7 @@ import com.guciowons.shoppingbasket.Product.Product;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PriceRecordService {
@@ -16,5 +17,9 @@ public class PriceRecordService {
     public void createPriceRecord(Product product){
         PriceRecord priceRecord = new PriceRecord(product.getId(), product.getPrice(), LocalDateTime.now());
         priceRecordRepository.save(priceRecord);
+    }
+
+    public List<PriceRecord> getPriceRecords() {
+        return priceRecordRepository.findAll();
     }
 }
