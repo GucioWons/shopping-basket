@@ -1,0 +1,32 @@
+replicaCount: 1
+image:
+  repository: shopping-basket
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  type: NodePort
+  port: 8080
+  nodeport: 30081
+mongo:
+  port: 27017
+  app: "mongo"
+  config:
+    name: mongo-conf
+    host: mongodb-service
+    database: admin
+  secret:
+    name: mongo-secret
+    username: dGVzdA==
+    password: dGVzdEAxMjM=
+  service:
+    name: mongodb-service
+  deployment:
+    name: "mongo"
+    replicas: 1
+    image: 
+      repository: mongo
+      tag: latest
+      name: mongo
+  pvc:
+    name: "mongo-pv-claim"
+  

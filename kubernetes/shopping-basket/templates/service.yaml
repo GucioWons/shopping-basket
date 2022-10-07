@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: {{ include "shopping-basket.fullname" . }}
+spec:
+  selector:
+    app: {{ include "shopping-basket.name" . }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.service.port }}
+      nodePort: {{ .Values.service.nodeport }}
+  type: {{ .Values.service.type }}
