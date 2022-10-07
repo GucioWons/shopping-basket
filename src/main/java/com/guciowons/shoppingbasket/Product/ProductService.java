@@ -1,5 +1,6 @@
 package com.guciowons.shoppingbasket.Product;
 
+import com.guciowons.shoppingbasket.PriceRecord.PriceRecordService;
 import feign.FeignException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -12,10 +13,12 @@ public class ProductService {
 
     private final ProductProvider productProvider;
     private final ProductRepository productRepository;
+    private final PriceRecordService priceRecordService;
 
-    public ProductService(ProductProvider productProvider, ProductRepository productRepository) {
+    public ProductService(ProductProvider productProvider, ProductRepository productRepository, PriceRecordService priceRecordService) {
         this.productProvider = productProvider;
         this.productRepository = productRepository;
+        this.priceRecordService = priceRecordService;
     }
 
     @Scheduled(fixedDelay = 3600000)
@@ -30,13 +33,19 @@ public class ProductService {
     public void insertProducts(){
             productProvider.getProducts()
                     .forEach(externalProduct -> productRepository.findProductByExternalId(externalProduct.getExternalId()).ifPresentOrElse(
-                            databaseProduct -> updateProducts(databaseProduct, externalProduct),
-                            () -> productRepository.save(externalProduct)
+                            databaseProduct -> updateProduct(databaseProduct, externalProduct),
+                            () -> insertProduct(externalProduct)
                     ));
     }
 
-    private void updateProducts(Product databaseProduct, Product externalProduct){
+    private void insertProduct(Product externalProduct){
+        priceRecordService.createPriceRecord(externalProduct);
+        productRepository.save(externalProduct);
+    }
+
+    private void updateProduct(Product databaseProduct, Product externalProduct){
         externalProduct.setId(databaseProduct.getId());
+        priceRecordService.createPriceRecord(externalProduct);
         productRepository.save(externalProduct);
     }
 
