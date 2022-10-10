@@ -20,20 +20,6 @@ spec:
       containers:
         - image: {{ .Values.mongo.deployment.image.repository }}:{{ .Values.mongo.deployment.image.tag }}
           name: {{ .Values.mongo.deployment.image.name }}
-
-          env:
-            - name: MONGO_INITDB_ROOT_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.mongo.secret.name }}
-                  key: username
-            - name: MONGO_INITDB_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: {{ .Values.mongo.secret.name }}
-                  key: password
-
-
           ports:
             - containerPort: {{ .Values.mongo.port }}
               name: {{ .Values.mongo.deployment.name }}
