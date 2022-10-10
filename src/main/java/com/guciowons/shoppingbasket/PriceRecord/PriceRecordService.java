@@ -2,7 +2,6 @@ package com.guciowons.shoppingbasket.PriceRecord;
 
 import com.guciowons.shoppingbasket.Product.Product;
 import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -10,11 +9,16 @@ import java.util.List;
 public class PriceRecordService {
     private final PriceRecordRepository priceRecordRepository;
 
+    public final boolean rollback = true;
+
     public PriceRecordService(PriceRecordRepository priceRecordRepository) {
         this.priceRecordRepository = priceRecordRepository;
     }
 
-    public void createPriceRecord(Product product){
+    public void createPriceRecord(Product product) throws Exception {
+        if(rollback){
+            throw new Exception();
+        }
         priceRecordRepository.save(new PriceRecord(product.getId(), product.getPrice(), LocalDateTime.now()));
     }
 

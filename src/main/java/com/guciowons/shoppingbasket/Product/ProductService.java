@@ -1,10 +1,8 @@
 package com.guciowons.shoppingbasket.Product;
 
-import com.guciowons.shoppingbasket.PriceRecord.PriceRecordService;
 import feign.FeignException;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -13,16 +11,16 @@ public class ProductService {
 
     private final ProductProvider productProvider;
     private final ProductRepository productRepository;
-    private final PriceRecordService priceRecordService;
+    private final TransProductService transProductService;
 
-    public ProductService(ProductProvider productProvider, ProductRepository productRepository, PriceRecordService priceRecordService) {
+    public ProductService(ProductProvider productProvider, ProductRepository productRepository, TransProductService transProductService) {
         this.productProvider = productProvider;
         this.productRepository = productRepository;
-        this.priceRecordService = priceRecordService;
+        this.transProductService = transProductService;
     }
 
     @Scheduled(fixedDelay = 3600000)
-    public void refreshProductsInDatabase(){
+    public void refreshProductsInDatabase() throws Exception{
         try {
             insertProducts();
         }catch (FeignException e){
@@ -33,21 +31,18 @@ public class ProductService {
     public void insertProducts(){
             productProvider.getProducts()
                     .forEach(externalProduct -> productRepository.findProductByExternalId(externalProduct.getExternalId()).ifPresentOrElse(
-                            databaseProduct -> updateProduct(databaseProduct, externalProduct),
-                            () -> insertProduct(externalProduct)
+                            databaseProduct -> {
+                                    transProductService.updateProduct(databaseProduct, externalProduct);
+                            },
+                            () -> {
+                                    transProductService.insertProduct(externalProduct);
+                            }
                     ));
     }
 
-    private void insertProduct(Product externalProduct){
-        productRepository.save(externalProduct);
-        priceRecordService.createPriceRecord(externalProduct);
-    }
 
-    private void updateProduct(Product databaseProduct, Product externalProduct){
-        externalProduct.setId(databaseProduct.getId());
-        priceRecordService.createPriceRecord(externalProduct);
-        productRepository.save(externalProduct);
-    }
+
+
 
     public List<Product> getProducts() {
        return productRepository.findAll();
