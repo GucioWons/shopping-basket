@@ -14,10 +14,6 @@ mongo:
     name: mongo-conf
     host: mongodb-service
     database: admin
-  secret:
-    name: mongo-secret
-    username: dGVzdA==
-    password: dGVzdEAxMjM=
   service:
     name: mongodb-service
   deployment:
@@ -29,4 +25,6 @@ mongo:
       name: mongo
   pvc:
     name: "mongo-pv-claim"
+  replicaset:
+    name: "mongo-replicaset"
   

@@ -1,7 +1,0 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: {{ .Values.mongo.config.name }}
-data:
-  host: {{ .Values.mongo.config.host }}
-  database: {{ .Values.mongo.config.database }}
