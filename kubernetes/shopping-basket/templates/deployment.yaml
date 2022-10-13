@@ -18,14 +18,3 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 8080
-          env:
-            - name: MONGO_DB
-              valueFrom:
-                configMapKeyRef:
-                  name: mongo-conf
-                  key: database
-            - name: MONGO_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: mongo-conf
-                  key: host
