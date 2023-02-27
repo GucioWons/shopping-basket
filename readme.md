@@ -38,10 +38,6 @@ docker run -p 9090:8080 shopping-basket
   POST /baskets
 ```
 
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `id`      | `string` | **Required**. Id of item to fetch |
-
 #### Add products to basket
 
 ```http
