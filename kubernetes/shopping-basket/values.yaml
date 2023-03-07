@@ -1,8 +1,7 @@
 replicaCount: 1
 image:
   repository: shopping-basket
-  tag: latest
-  pullPolicy: IfNotPresent
+  tag: 0.0.5
 service:
   type: NodePort
   port: 8080

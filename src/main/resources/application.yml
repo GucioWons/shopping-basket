@@ -3,7 +3,8 @@ spring:
     name: shopping-basket
   data:
     mongodb:
-      uri: mongodb://${MONGO_HOST:localhost}:27017/${MONGO_DB:database}?retryWrites=false
+      uri: mongodb://shopping-basket-mongodb-0.shopping-basket-mongodb-headless.default.svc.cluster.local:27017
+      database: ${MONGO_DB:database}
 management:
   endpoint:
     restart:

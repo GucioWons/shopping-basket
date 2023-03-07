@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @EnableTransactionManagement
 public class ShoppingbasketApplication{
 	public static void main(String[] args) {
+		System.out.println("dupa");
 		SpringApplication.run(ShoppingbasketApplication.class, args);
 	}
 }
