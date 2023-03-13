@@ -21,7 +21,7 @@ public class ProductService {
     }
 
     @Scheduled(fixedDelay = 3600000)
-    public void refreshProductsInDatabase() throws Exception{
+    public void refreshProductsInDatabase(){
         try {
             insertProducts();
         }catch (FeignException e){
@@ -32,18 +32,10 @@ public class ProductService {
     private void insertProducts(){
             productProvider.getProducts()
                     .forEach(externalProduct -> productRepository.findProductByExternalId(externalProduct.getExternalId()).ifPresentOrElse(
-                            databaseProduct -> {
-                                    transProductService.updateProduct(databaseProduct, externalProduct);
-                            },
-                            () -> {
-                                    transProductService.insertProduct(externalProduct);
-                            }
+                            databaseProduct -> transProductService.updateProduct(databaseProduct, externalProduct),
+                            () -> transProductService.insertProduct(externalProduct)
                     ));
     }
-
-
-
-
 
     public List<Product> getProducts() {
        return productRepository.findAll();

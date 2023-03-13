@@ -1,10 +1,12 @@
+logging:
+  level:
+    org.springframework.transaction.interceptor: TRACE
 spring:
   application:
     name: shopping-basket
   data:
     mongodb:
-      uri: mongodb://shopping-basket-mongodb-0.shopping-basket-mongodb-headless.default.svc.cluster.local:27017
-      database: ${MONGO_DB:database}
+      uri: mongodb://shopping-basket-mongodb-0.shopping-basket-mongodb-headless.default.svc.cluster.local:27017/database?ReadPreference=primary
 management:
   endpoint:
     restart:

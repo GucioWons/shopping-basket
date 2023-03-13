@@ -16,7 +16,7 @@ public class TransProductService{
         this.productRepository = productRepository;
         this.priceRecordRepository = priceRecordRepository;
     }
-    @Transactional("mongoTransactionManager")
+    @Transactional(value = "mongoTransactionManager")
     public void insertProduct(Product externalProduct){
         productRepository.save(externalProduct);
         priceRecordRepository.save(new PriceRecord(externalProduct.getId(), externalProduct.getPrice(), LocalDateTime.now()));
