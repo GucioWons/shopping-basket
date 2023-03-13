@@ -4,18 +4,37 @@ Shopping basket is a spring application for adding and deleting products from ba
 
 ## Installation
 
-Execute mvn install.
-
 Go to the project folder.
 
-Build docker image with docker.
+Execute mvn install:
 
 ```bash
-docker build -t shopping-basket .
+mvn install -DskipTests
 ```
 
-Run container at port 9090.
+Build docker image with docker:
 
 ```bash
-docker run -p 9090:8080 shopping-basket
+docker build -t shopping-basket:{version of app} .
 ```
+
+Load docker image into minikube:
+
+```bash
+minikube image load shopping-basket:{version of image}
+```
+
+Go to the kubernetes folder in the project folder.
+
+Build helm dependencies:
+
+```bash
+helm dependency build ./shopping-basket
+```
+
+Execute helm install
+
+```bash
+helm install shopping-basket ./shopping-basket
+```
+
