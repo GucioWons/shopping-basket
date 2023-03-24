@@ -1,7 +1,7 @@
 replicaCount: 1
 image:
   repository: shopping-basket
-  tag: 0.0.12
+  tag: 0.0.15
 service:
   type: NodePort
   port: 8080

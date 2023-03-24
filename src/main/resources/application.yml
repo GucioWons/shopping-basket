@@ -1,6 +1,3 @@
-logging:
-  level:
-    org.springframework.transaction.interceptor: TRACE
 spring:
   application:
     name: shopping-basket
