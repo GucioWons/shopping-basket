@@ -22,7 +22,7 @@ public class BasketService {
     }
 
 
-    public Basket addProductToBasket(String basketId, String productId, int quantity) throws NoExternalConnectionException, NoProductException, NoBasketException{
+    public Basket addProductToBasket(String basketId, String productId, int quantity) throws NoProductException, NoBasketException{
         return basketRepository.findById(basketId)
                 .map(basket -> addProductIfExists(basket, productId, quantity))
                 .orElseThrow(() -> new NoBasketException("No such basket"));
@@ -38,7 +38,7 @@ public class BasketService {
     }
 
 
-    public Basket removeProductFromBasket(String basketId, String productId, int quantity) throws NoExternalConnectionException, NoProductInBasketException, NoProductException, NoBasketException {
+    public Basket removeProductFromBasket(String basketId, String productId, int quantity) throws NoProductInBasketException, NoProductException, NoBasketException {
         return basketRepository.findById(basketId)
                 .map(basket -> removeProductIfExists(basket, productId, quantity))
                 .orElseThrow(() -> new NoBasketException("No such basket"));
@@ -54,7 +54,7 @@ public class BasketService {
     }
 
 
-    public BasketSummarized summarizeBasket(String basketId) throws NoBasketException, NoExternalConnectionException{
+    public BasketSummarized summarizeBasket(String basketId) throws NoBasketException{
         return basketRepository.findById(basketId).map(
                 basket -> basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts())
         ).orElseThrow(() -> new NoBasketException("No such basket"));
