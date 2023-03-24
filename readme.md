@@ -38,3 +38,54 @@ Execute helm install
 helm install shopping-basket ./shopping-basket
 ```
 
+## API Reference
+
+### Products
+
+#### Get all products
+
+```http
+  GET /products
+```
+
+### Baskets
+
+#### Create basket
+
+```http
+  POST /baskets
+```
+
+#### Add products to basket
+
+```http
+  PUT /baskets/{basketId}/{productId}/{quantity}
+```
+
+| Parameter | Type     |Required|Description                  |
+| :-------- | :------- | :----- |:--------------------------- |
+| `basketId`| `string` | `YES`  |Id of basket |
+| `productId`| `string` | `YES`  |Id of product to add |
+| `quantity`| `int` | `YES`  |Quantity of products to add |
+
+#### Remove products from basket
+
+```http
+  DELETE /baskets/{basketId}/{productId}/{quantity}
+```
+
+| Parameter | Type     |Required|Description                  |
+| :-------- | :------- | :----- |:--------------------------- |
+| `basketId`| `string` | `YES`  |Id of basket |
+| `productId`| `string` | `YES`  |Id of product to remove |
+| `quantity`| `int` | `YES`  |Quantity of products to remove |
+
+#### Get basket by id
+
+```http
+  GET /baskets/{basketId}
+```
+
+| Parameter | Type     |Required|Description                  |
+| :-------- | :------- | :----- |:--------------------------- |
+| `basketId`| `string` | `YES`  |Id of basket to get |
