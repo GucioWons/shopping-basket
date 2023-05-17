@@ -9,16 +9,11 @@ import java.util.List;
 public class PriceRecordService {
     private final PriceRecordRepository priceRecordRepository;
 
-    public final boolean rollback = true;
-
     public PriceRecordService(PriceRecordRepository priceRecordRepository) {
         this.priceRecordRepository = priceRecordRepository;
     }
 
-    public void createPriceRecord(Product product) throws Exception {
-        if(rollback){
-            throw new Exception();
-        }
+    public void createPriceRecord(Product product){
         priceRecordRepository.save(new PriceRecord(product.getId(), product.getPrice(), LocalDateTime.now()));
     }
 
