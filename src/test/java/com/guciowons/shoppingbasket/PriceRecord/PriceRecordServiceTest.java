@@ -20,6 +20,7 @@ class PriceRecordServiceTest {
 
     @Mock
     private PriceRecordRepository priceRecordRepository;
+
     @Captor
     private ArgumentCaptor<PriceRecord> priceRecordCaptor;
     private PriceRecordService underTest;

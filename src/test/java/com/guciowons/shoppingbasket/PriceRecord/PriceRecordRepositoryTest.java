@@ -1,5 +1,6 @@
 package com.guciowons.shoppingbasket.PriceRecord;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,11 @@ class PriceRecordRepositoryTest {
         underTest.save(new PriceRecord("first", new BigDecimal(10), LocalDateTime.of(2000, 2, 1, 12, 0)));
         underTest.save(new PriceRecord("second", new BigDecimal(20), LocalDateTime.of(2000, 2, 1, 12, 0)));
         underTest.save(new PriceRecord("first", new BigDecimal(10), LocalDateTime.of(2001, 1, 2, 12, 0)));
+    }
+
+    @AfterEach
+    void tearDown(){
+        underTest.deleteAll();
     }
 
     @Test

@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -44,5 +45,14 @@ class ProductProviderTest {
             assertThat(product.getDescription()).isEqualTo(externalProduct.getDescription());
             assertThat(product.getPrice()).isEqualTo(externalProduct.getPrice());
         });
+    }
+
+    @Test
+    void getProducts_empty(){
+        when(externalProductClient.getExternalProducts()).thenReturn(new ArrayList<>());
+
+        List<Product> products = underTest.getProducts();
+
+        assertThat(products).isEmpty();
     }
 }
