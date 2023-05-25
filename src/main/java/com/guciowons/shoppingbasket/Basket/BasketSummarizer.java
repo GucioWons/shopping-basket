@@ -1,5 +1,6 @@
 package com.guciowons.shoppingbasket.Basket;
 
+import com.guciowons.shoppingbasket.Exception.NoProductException;
 import com.guciowons.shoppingbasket.Product.Product;
 import org.springframework.stereotype.Component;
 
@@ -24,14 +25,14 @@ public class BasketSummarizer {
 
     private List<BasketSummarized.MultiProduct> productsMapToList(HashMap<String, Integer> basketProducts, List<Product> allProducts){
         return basketProducts.entrySet().stream()
-                .map(product -> summarizeProduct(findProductById(allProducts, product.getKey()), product.getValue())).toList();
+                .map(basketProduct -> summarizeProduct(findProductById(allProducts, basketProduct.getKey()), basketProduct.getValue())).toList();
     }
 
     private Product findProductById(List<Product> allProducts, String id){
         return allProducts.stream()
                 .filter(product -> id.equals(product.getId()))
                 .findFirst()
-                .orElse(null);
+                .orElseThrow(() -> new NoProductException("Basket contains nonexistent product!"));
     }
 
     private BasketSummarized.MultiProduct summarizeProduct(Product product, int quantity){

@@ -33,7 +33,7 @@ public class ProductService {
             productProvider.getProducts()
                     .forEach(externalProduct -> productRepository.findProductByExternalId(externalProduct.getExternalId()).ifPresentOrElse(
                             databaseProduct -> transProductService.updateProduct(databaseProduct, externalProduct),
-                            () -> transProductService.insertProduct(externalProduct)
+                                    () -> transProductService.insertProduct(externalProduct)
                     ));
     }
 
