@@ -19,16 +19,14 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
+    private ProductService underTest;
 
     @Mock
     private ProductProvider productProvider;
-
     @Mock
     private ProductRepository productRepository;
-
     @Mock
     private TransProductService transProductService;
-    private ProductService underTest;
 
     @BeforeEach
     void setUp(){
@@ -47,8 +45,8 @@ class ProductServiceTest {
         underTest.refreshProductsInDatabase();
 
         verify(productProvider).getProducts();
-        verify(productRepository).findProductByExternalId(0);
         verify(productRepository).findProductByExternalId(1);
+        verify(productRepository).findProductByExternalId(2);
         verify(transProductService).insertProduct(products.get(0));
         verify(transProductService).insertProduct(products.get(1));
     }

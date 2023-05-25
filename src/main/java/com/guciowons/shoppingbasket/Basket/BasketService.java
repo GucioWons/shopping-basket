@@ -56,7 +56,7 @@ public class BasketService {
 
     public BasketSummarized summarizeBasket(String basketId) throws NoBasketException{
         return basketRepository.findById(basketId).map(
-                basket -> basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts())
-        ).orElseThrow(() -> new NoBasketException("No such basket"));
+                basket -> basketSummarizer.summarizeBasket(basket.getContent(), productService.getProducts()))
+                .orElseThrow(() -> new NoBasketException("No such basket"));
     }
 }

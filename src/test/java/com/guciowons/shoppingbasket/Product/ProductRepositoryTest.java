@@ -13,7 +13,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class ProductRepositoryTest {
 
     @Autowired
-    ProductRepository underTest;
+    private ProductRepository underTest;
 
     @AfterEach
     void tearDown() {
@@ -24,13 +24,16 @@ class ProductRepositoryTest {
     void findProductByExternalId() {
         Product product = new Product(1, "Test product", new BigDecimal(10), "Test product");
         underTest.save(product);
+
         Product response = underTest.findProductByExternalId(1).orElse(null);
+
         assertThat(response).isNotNull();
     }
 
     @Test
     void findProductByWrongExternalId() {
         Product response = underTest.findProductByExternalId(1).orElse(null);
+
         assertThat(response).isNull();
     }
 }

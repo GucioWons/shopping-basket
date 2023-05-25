@@ -17,13 +17,12 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class PriceRecordServiceTest {
+    private PriceRecordService underTest;
 
     @Mock
     private PriceRecordRepository priceRecordRepository;
-
     @Captor
     private ArgumentCaptor<PriceRecord> priceRecordCaptor;
-    private PriceRecordService underTest;
 
     @BeforeEach
     void setUp(){

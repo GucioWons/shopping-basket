@@ -17,16 +17,14 @@ import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class TransProductServiceTest {
+    private TransProductService underTest;
 
     @Mock
     private ProductRepository productRepository;
-
     @Mock
     private PriceRecordRepository priceRecordRepository;
-
     @Captor
     private ArgumentCaptor<PriceRecord> priceRecordCaptor;
-    private TransProductService underTest;
 
     @BeforeEach
     void setUp(){

@@ -16,10 +16,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 class PriceRecordRepositoryTest {
 
     @Autowired
-    PriceRecordRepository underTest;
+    private PriceRecordRepository underTest;
 
     @BeforeEach
-    void populateRepository(){
+    void setUp(){
         underTest.save(new PriceRecord("first", new BigDecimal(10), LocalDateTime.of(2000, 2, 1, 12, 0)));
         underTest.save(new PriceRecord("second", new BigDecimal(20), LocalDateTime.of(2000, 2, 1, 12, 0)));
         underTest.save(new PriceRecord("first", new BigDecimal(10), LocalDateTime.of(2001, 1, 2, 12, 0)));

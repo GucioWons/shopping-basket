@@ -15,10 +15,10 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class ProductProviderTest {
+    private ProductProvider underTest;
 
     @Mock
     private ExternalProductClient externalProductClient;
-    private ProductProvider underTest;
 
     @BeforeEach
     void setUp(){
@@ -34,7 +34,6 @@ class ProductProviderTest {
         externalProduct.setPrice(BigDecimal.valueOf(10));
 
         when(externalProductClient.getExternalProducts()).thenReturn(List.of(externalProduct));
-
         List<Product> products = underTest.getProducts();
 
         assertThat(products).hasSize(1);

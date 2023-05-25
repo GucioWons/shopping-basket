@@ -1,5 +1,6 @@
 package com.guciowons.shoppingbasket.Product;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
@@ -7,7 +8,12 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ProductTest {
-    Product underTest = new Product(1000, "abcd", new BigDecimal(1), "qwertyuiop");
+    private Product underTest;
+
+    @BeforeEach
+    void setUp(){
+        underTest = new Product(1000, "abcd", new BigDecimal(1), "qwertyuiop");
+    }
 
     @Test
     void setId_getId(){
